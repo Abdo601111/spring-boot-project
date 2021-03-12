@@ -1,19 +1,20 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragment:: page_head(${pagrTitle})"></head>
+<head th:replace="fragment:: page_head('Your account Details')"></head>
 <body>
 
 	<div class="container-fluid">
 <div  th:replace="navbar:: menu"></div>
 
-		<div>
-			<h1> Manage Users  | [[${pageTitle}]]</h1>
+		
+
+		<form th:action="@{/user/update}" method="post" style="max-width: 700px;margin: 0 auto;" th:object="${user}"
+		  enctype="multipart/form-data" >
+		  <div class="text-center">
+			<h2> Your Account Details  </h2>
 			
 		</div>
-
-
-		<form th:action="@{/user/save}" method="post" style="max-width: 700px;margin: 0 auto;" th:object="${user}"
-		onsubmit="return checkEmailUnique(this);"  enctype="multipart/form-data" >
+		  
 		
 		<input type="hidden" th:field="*{id}" />
 
@@ -21,7 +22,7 @@
 				<div class="form-group row">
 					<label class="col-sm-4 col-form-label">E-mail</label>
 					<div class="col-sm-8">
-						<input type="email" class="form-control" th:field="*{email}" required minlength="8" maxlength="100">
+						<input type="email" class="form-control" th:field="*{email}" readonly="readonly">
 
 					</div>
 				</div>
@@ -45,31 +46,28 @@
 				<div class="form-group row">
 					<label class="col-sm-4 col-form-label">Password</label>
 					<div class="col-sm-8">
-						<input th:if="${user.id ==null}" type="password" class="form-control" th:field="*{password}" required minlength="8" maxlength="100">
-						<input th:if="${user.id !=null}" type="password" class="form-control" th:field="*{password}"  minlength="8" maxlength="100">
-
+						<input type="password" th:faild="*{password}" class="form-control" placeholder="leav blank if you wont change password" 
+						minlength="8" maxlength="100" oninput="chechPasswordMatch(document.getElementById('confirmPassword'))"/>
+					</div>
+				</div>
+				
+				<div class="form-group row">
+					<label class="col-sm-4 col-form-label">Confirm Password</label>
+					<div class="col-sm-8">
+						<input type="password" th:faild="*{password}" id="confirmPassword" 
+						minlength="8" maxlength="100" class="form-control"  oninput="chechPasswordMatch(this)"/>
 					</div>
 				</div>
 				
 				<div class="form-group row">
 					<label class="col-sm-4 col-form-label">Roles</label>
 					<div class="col-sm-8">
-                         <th:block th:each="role : ${list_role}">
-                         <input  type="checkbox"  th:field="*{role}"  th:text="${role.name}" th:value="${role.id}"/>
-                          - <small>[[${role.description}]]</small>
-                          <br/>
-                         </th:block>
+                        <span><b>[[${user.role}]]</b></span>
                         
 					</div>
 				</div>
 				
-				<div class="form-group row">
-					<label class="col-sm-4 col-form-label">Enabled</label>
-					<div class="col-sm-8">
-					<input type="checkbox" th:field="*{enabled}"/>
-
-					</div>
-				</div>
+			
 				
 				
 				
@@ -152,41 +150,15 @@
 		
 		
 	}
-	
-	function checkEmailUnique(form){
-		//alert("This Email Is Unique");
-		url="[[@{/user/check_email}]]";
-		userEmail= $("#email").val();
-		userId= $("#id").val();
-		csrfValue =$("input[name='_csrf']").val();
-		param ={ id: userId, email : userEmail,_csrf : csrfValue};
-		//$("#modalDailog").modal();
+	function chechPasswordMatch(confirmPassword){
+		if(confirmPassword.value != $("#password").val()){
+			confirmPassword.setCustomValidity("Password Do Not Match");
+		}
 		
-	//	if(true) return false;
-		
-		$.post(url,param,function(response){
-			
-			if(response == "OK"){
-				form.submit();
-			}else if (response == "Duplicated"){
-				showModelDailog("Worning","Email Is unique :"+userEmail);
-				
-				
-				//alert("Email Is unique :"+userEmail);
-				
-			}
-			//alert("Respose from server"+userEmail);
-			
-		});
-		return false;
 	}
 	
-	function showModelDailog(title,message){
-		
-		$("#modalTitle").text(title);
-		$("#modalBody").text(message);
-		$("#modalDailog").modal();
-	}
+	
+	
 	
 	
 	</script>

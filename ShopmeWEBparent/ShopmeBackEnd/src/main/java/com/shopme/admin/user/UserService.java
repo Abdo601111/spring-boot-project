@@ -6,6 +6,9 @@ import java.util.NoSuchElementException;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +18,8 @@ import com.shopme.common.entity.User;
 @Service
 @Transactional
 public class UserService {
+	
+	public static final int PAGE_NUMPER=4;
 	
 	@Autowired
 	public UserRepository repo;
@@ -26,11 +31,29 @@ public class UserService {
 	private PasswordEncoder passwordEncoder;
 	
 	
+	public User getUserEmail(String email) {
+		return repo.getUserByEmail(email);
+	}
+	
+	
+	
 	public List<User> listAll(){
 		
 		return (List<User>) repo.findAll();
 	}
 	
+	
+	public Page<User>ListPage(int number,String keyWord){
+		Pageable pageable = PageRequest.of(number -1, PAGE_NUMPER);
+		
+		if(keyWord != null) {
+			return repo.findAll(keyWord,pageable);
+		}
+		
+		return repo.findAll(pageable);
+		
+		
+	}
 	
 	
 	
@@ -123,6 +146,22 @@ public List<Role> listAllRole(){
 	public void updateEnabledStatus(Integer id,boolean enabled) {
 		
 		repo.updateEnabledStatus(id, enabled);
+	}
+	
+	
+	public User updateAccount(User userForm) {
+		
+		User userDb = repo.findById(userForm.getId()).get();
+		if(userForm.getPassword().isEmpty()) {
+			userDb.setPassword(userForm.getPassword());
+			encoderpassword(userDb);
+		}
+		if(userForm.getPhotos() !=null) {
+			userDb.setPhotos(userForm.getPhotos());
+		}
+		userDb.setFirstName(userForm.getFirstName());
+		userDb.setLastName(userForm.getLastName());
+		return userDb;
 	}
 	
 	
