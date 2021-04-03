@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragment:: page_head('Category - Shopme Admin','none')"></head>
+
+<body>
+
+	<div class="container-fluid">
+		<div  th:replace="navbar:: menu"></div>
+
+		<div>
+			<h1>Manage Category</h1>
+			<a th:href="@{/category/new}"
+				class="fas fa-user-plus fa-2x icon-dark mr-2"></a> 
+				
+				<a class="fas fa-file-csv fa-2x icon-dark mr-2"
+				th:href="@{/category/export/csv}" >
+				 </a> 
+
+
+		</div>
+		<div th:replace="fragment :: search_form_and_message('/categories/page/1')" ></div>
+
+		<div class="full-details">
+			<table
+				class="table table-bordered table-striped table-hover table-responsive-xl">
+				<thead class="thead-dark">
+					<tr>
+						<th>Category Id</th>
+
+                         <th>Image</th> 
+						<th th:replace="fragment :: column_link('/categories', 'name', 'Category Name', 'none')" ></th>
+
+						<th>Alias</th>
+
+                             
+
+						<th>Enable</th>
+						<th>Action</th>
+					</tr>
+
+				</thead>
+				<tbody>
+					<tr th:each="category : ${listCategories}">
+						<td>[[${category.id}]]</td>
+						<td><span th:if="${category.image==null}"
+							class="fas fa-portrait fa-8x icon-silver" ></span> <img
+							th:if="${category.image !=null}" th:src="@{${category.getImagePath}}"
+							style="width: 60px;height: 70px" /></td>
+						<td>[[${category.name}]]</td>
+						<td>[[${category.alias}]]</td>
+						
+						<td><a th:if="${category.enabled==true}"
+							class="fas fa-check-circle fa-2x icon-green"
+							th:href="@{'/category/'+${category.id} +'/enabled/false'}"
+							title="Edit User"> </a> <a th:if="${category.enabled==false}"
+							class="fas fa-circle fa-2x icon-dark"
+							th:href="@{'/category/'+${category.id} +'/enabled/true'}"> </a></td>
+						<td><a class="fas fa-edit fa-2x icon-green"
+							th:href="@{'/category/edit/' + ${category.id}}"> </a> &nbsp; <a
+							class="fas fa-trash fa-2x icon-dark link-delete"
+							th:href="@{'/category/delete/' + ${category.id}}" th:userId="${category.id}">
+						</a></td>
+					</tr>
+
+				</tbody>
+
+
+			</table>
+		</div>
+
+
+
+
+<div class="less-details">
+			<div th:each="category : ${listCategories}" class="row m-1">
+				<div class="col-4">
+					<span th:if="${category.image==null}"
+						class="fas fa-portrait fa-3x icon-silver"></span> <img
+						th:if="${category.image !=null}" th:src="@{${category.getImagePath}}"
+						style="width: 100px; height: 100px" />
+				</div>
+				<div class="col-8">
+					<div>[[${category.name}]]</div>
+					<div>[[${category.alias}]]</div>
+					<div>
+						<a th:if="${category.enabled==true}"
+							class="fas fa-check-circle fa-2x icon-green"
+							th:href="@{'/category/'+${category.id} +'/enabled/false'}"
+							title="Edit User"> </a> <a th:if="${category.enabled==false}"
+							class="fas fa-circle fa-2x icon-dark"
+							th:href="@{'/category/'+${category.id} +'/enabled/true'}"> </a>
+						<a class="fas fa-edit fa-2x icon-green"
+							th:href="@{'/category/edit/' + ${category.id}}"> </a> &nbsp; <a
+							class="fas fa-trash fa-2x icon-dark link-delete"
+							th:href="@{'/category/delete/' + ${category.id}}" th:userId="${category.id}">
+						</a>
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+
+		 
+		 
+		 
+		<div th:if="${keyword != null}" class="text-center">
+		<span>Search result does not show categories in hierarchical form</span>
+		<div th:replace="fragment :: pagination('/categories', 'categories')"></div>
+	</div>
+	
+	<th:block th:unless="${keyword != null}">
+	<div th:replace="fragment :: pagination('/categories', 'top-level categories')"></div>
+	</div>
+		 
+		 
+
+		<div class="modal fade text-center" id="modalDelete">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title">Delete Confirmation</h4>
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+
+					</div>
+					<div class="modal-body">
+						<span id="modalBody"></span>
+
+					</div>
+					<div class="modal-footer">
+						<a class="btn btn-success" href="" id="yesButton">Yes</a>
+
+						<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+
+					</div>
+
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+	<div th:replace="fragment:: footer"></div>
+
+	<script type="text/javascript">
+	
+	$(document).ready(function(){
+		
+		$(".link-delete").on("click",function(e){
+			e.preventDefault();
+			link = $(this);
+			userId= link.attr("userId");
+			//alert("you are Deleting");
+			$("#yesButton").attr("href",link.attr("href"));
+			$("#modalBody").text("Are You Sure You Wont To Deleting User Id : "+userId);
+			$("#modalDelete").modal();
+			
+		})
+		
+	});
+	function clearFilter(){
+		 window.location="[[@{/categories}]]";
+		}
+	
+	</script>
+</body>
+</html>

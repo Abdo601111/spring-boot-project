@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragment:: page_head('Users - Shopme Admin')"></head>
+<head th:replace="fragment:: page_head('Users - Shopme Admin','none')"></head>
 
 <body>
 
@@ -12,6 +12,7 @@
 			<a th:href="@{/users/new}"
 				class="fas fa-user-plus fa-2x icon-dark mr-2"></a> <a
 				th:href="@{/users/export/csv}"
+				
 				class="fas fa-file-csv fa-2x icon-dark mr-2"> </a> <a
 				th:href="@{/users/export/excel}"
 				class="fas fa-file-excel fa-2x icon-dark mr-2"></a> <a
@@ -164,7 +165,7 @@
 
 		</div>
 
-
+ 
 		<div class="modal fade text-center" id="modalDelete">
 			<div class="modal-dialog">
 				<div class="modal-content">
@@ -190,6 +191,7 @@
 		</div>
 	</div>
 
+   
 	<div th:replace="fragment:: footer"></div>
 
 	<script type="text/javascript">

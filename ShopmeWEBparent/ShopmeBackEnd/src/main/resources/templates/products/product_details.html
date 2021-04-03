@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+
+	<div th:fragment="content"  id="divProductDetails">
+	
+	<th:block th:each=" productDetails ,status: ${product.details}">
+	
+	
+	  <div class="form-inline" th:id="'divDetails' +${status.index}">
+	     	<label class="m-3">Name :</label>
+	    	<input  type="text" class="form-control w-25" name="detailsName"
+	    	th:value="${productDetails.name}" >
+		
+	     	<label class="m-3">Value :</label>
+		   <input  type="text" class="form-control w-25" name="detailsValue" 
+		   
+		   th:value="${productDetails.value}">
+		   <a class="btn fas fa-times-circle fa-2x icon-dark " title="Remove This Details" 
+		name="removeproductDetails"></a>
+		
+		</div>
+	
+	</th:block>
+	
+
+		<div class="form-inline" th:id="'divDetails'+${#lists.size(product.details)}">
+		<label class="m-3">Name :</label>
+		<input  type="text" class="form-control w-25" name="detailsName" >
+		
+		<label class="m-3">Value :</label>
+		<input  type="text" class="form-control w-25" name="detailsValue" >
+		
+		
+		</div>
+
+	</div>
+</body>
+
+</html>

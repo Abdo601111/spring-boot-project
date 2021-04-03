@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragment:: page_head(${pagrTitle})"></head>
+<head th:replace="fragment:: page_head(${pagrTitle},'none')"></head>
 <body>
 
 	<div class="container-fluid">
@@ -92,66 +92,16 @@
 
 			</div>
 		</form>
-       <div  class="modal fade text-center" id="modalDailog">
-          <div class="modal-dialog">
-             <div class="modal-content">
-              <div class="modal-header">
-              <h4 class="modal-title" id="modalTitle">Warning</h4>
-              <button type="button" class="close" data-dismiss="modal">&times;</button>
-              
-              </div>
-              <div class="modal-body">
-              <span id="modalBody"></span>
-              
-              </div>
-              <div class="modal-footer">
-              <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-              
-              </div>
-             
-             </div>
-          
-          </div>
-        
-       </div>
+       <div th:replace="modul :: modal_dialog"></div>
 
 
 		<div class="text-center">
 			<p>Shopme Control Panel Copyright &copy; Shopme</p>
 		</div>
 	</div>
+	<script type="text/javascript" th:src="@{/js/common_form.js}"></script>
 	<script type="text/javascript">
 	
-	$(document).ready(function(){
-		
-		$("#buttonCansel").on("click",function(){
-			
-			window.location = "[[@{/users}]]";
-		});
-		$("#photoFile").change(function() {
-			fileSize = this.files[0].size;
-			alert("File Size " +fileSize);
-			if(fileSize > 1048576){
-				this.setCustomValidity("Thse File Must 1MB");
-				this.reportValidity();
-			}else{
-				this.setCustomValidity("");
-				showImageThumbanil(this);
-			}
-			
-		});
-		
-	});
-	function showImageThumbanil(fileInput){
-		var file = fileInput.files[0];
-		var reder = new FileReader();
-		reder .onload = function(e){
-			$("#thumbanil").attr("src",e.target.result);
-		};
-		reder.readAsDataURL(file)
-		
-		
-	}
 	
 	function checkEmailUnique(form){
 		//alert("This Email Is Unique");
@@ -169,27 +119,24 @@
 			if(response == "OK"){
 				form.submit();
 			}else if (response == "Duplicated"){
-				showModelDailog("Worning","Email Is unique :"+userEmail);
+				shoeWorningModal("Email Is unique :"+userEmail);
 				
 				
 				//alert("Email Is unique :"+userEmail);
 				
+			}else{
+				shoeErrorModal("Unknow Response From Server");
 			}
+			
 			//alert("Respose from server"+userEmail);
 			
 		});
 		return false;
 	}
 	
-	function showModelDailog(title,message){
-		
-		$("#modalTitle").text(title);
-		$("#modalBody").text(message);
-		$("#modalDailog").modal();
-	}
-	
 	
 	</script>
+	<script type="text/javascript" th:src="@{/js/common_form.js}"></script>
 </body>
 
 </html>

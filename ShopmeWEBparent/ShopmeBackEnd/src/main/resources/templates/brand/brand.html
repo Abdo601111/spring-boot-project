@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragment:: page_head('Brand- Shopme Admin','none')"></head>
+
+<body>
+
+	<div class="container-fluid">
+		<div  th:replace="navbar:: menu"></div>
+
+		<div>
+			<h1>Manage Brand</h1>
+			<a th:href="@{/brand/new}"
+				class="fas fa-user-plus fa-2x icon-dark mr-2"></a> 
+				
+			
+     <div th:replace="fragment :: search_form_and_message('/brands/page/1')" />
+
+
+		</div>
+
+		<div class="full-details">
+			<table
+				class="table table-bordered table-striped table-hover table-responsive-xl">
+				<thead class="thead-dark">
+					<tr>
+						<th>Brand Id</th>
+
+                         <th>Logo</th> 
+						<th th:replace="fragment :: column_link('/brands', 'name', 'Brand Name', 'none')" />
+
+						<th>Category</th>
+
+                            
+						<th>Action</th>
+					</tr>
+
+				</thead>
+				<tbody>
+					<tr th:each="brand : ${listBrand}">
+						<td>[[${brand.id}]]</td>
+						<td><span th:if="${brand.logo==null}"
+							class="fas fa-portrait fa-8x icon-silver" ></span> <img
+							th:if="${brand.logo !=null}" th:src="@{${brand.getImagePath}}"
+							style="width: 60px;height: 70px" /></td>
+						<td>[[${brand.name}]]</td>
+						<td>
+						<th:block th:each="cat : ${brand.categories}">
+						<span class="badge badge-secondary" th:text="${cat.name}"></span>
+						</th:block>
+					</td>
+
+						
+						
+						<td><a class="fas fa-edit fa-2x icon-green"
+							th:href="@{'/brand/edit/' + ${brand.id}}"> </a> &nbsp; <a
+							class="fas fa-trash fa-2x icon-dark link-delete"
+							th:href="@{'/brand/delete/' + ${brand.id}}" th:userId="${brand.id}">
+						</a></td>
+					</tr>
+
+				</tbody>
+
+
+			</table>
+		</div>
+
+
+
+
+       <div class="less-details">
+			<div th:each="brand : ${listBrand}" class="row m-1">
+				<div class="col-4">
+					<span th:if="${brand.logo==null}"
+						class="fas fa-portrait fa-3x icon-silver"></span> <img
+						th:if="${brand.logo !=null}" th:src="@{${brand.getImagePath}}"
+						style="width: 100px; height: 100px" />
+				</div>
+				<div class="col-8">
+					<div>[[${brand.name}]]</div>
+					
+					<div>
+						
+						<a class="fas fa-edit fa-2x icon-green"
+							th:href="@{'/brand/edit/' + ${brand.id}}"> </a> &nbsp; 
+							<div th:replace="fragment :: delete('brand', ${brand.id}, '/brand/delete/' + ${brand.id}, true)" ></div>						
+						
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+
+		 
+		 <div th:replace="fragment :: pagination('/brands', 'brands')"></div>
+	
+		 
+		
+		 
+		 
+
+		<div class="modal fade text-center" id="modalDelete">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title">Delete Confirmation</h4>
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+
+					</div>
+					<div class="modal-body">
+						<span id="modalBody"></span>
+
+					</div>
+					<div class="modal-footer">
+						<a class="btn btn-success" href="" id="yesButton">Yes</a>
+
+						<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+
+					</div>
+
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+	<div th:replace="fragment:: footer"></div>
+
+	<script type="text/javascript">
+	
+	$(document).ready(function(){
+		
+		$(".link-delete").on("click",function(e){
+			e.preventDefault();
+			link = $(this);
+			userId= link.attr("userId");
+			//alert("you are Deleting");
+			$("#yesButton").attr("href",link.attr("href"));
+			$("#modalBody").text("Are You Sure You Wont To Deleting User Id : "+userId);
+			$("#modalDelete").modal();
+			
+		})
+		
+	});
+	function clearFilter(){
+		 window.location="[[@{/categories}]]";
+		}
+	
+	</script>
+</body>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+
+	<div th:fragment="content" th:remove="tag">
+
+		<div class="row" id="divProductImages">
+			<div class="col border m-3 p-2">
+				<div>
+					<label>Main Image  [[${product.mainImage}]]</label>
+				</div>
+				<div>
+					<img id="thumbanil" alt="Main Image Preview " class="img-fluid"
+						th:src="@{${product.mainImagePath}}" />
+				</div>
+				<div>
+					<input type="file" id="photoFile" name="photoFile"
+						accept="image/png, image/jpeg" th:required="${product.mainImage==null}">
+				</div>
+                  <input type="hidden"  th:field="*{mainImage}"> 
+			</div>
+
+               <th:block th:each="productImage,status : ${product.images}">
+               
+               
+                 
+             <div class="col border m-3 p-2" th:id="'exterImageRemove' +${status.index}">
+				<div  >
+					<label>Extra  Image#[[${status.index +1}]] : [[${productImage.name}]]</label>
+			    <a  name="removLinkImage" class="btn fas fa-times-circle fa-2x icon-dark float-right" title="Remove This Image"  ></a>
+				   </div>
+				   
+				<div>
+					<img th:id="'extraThumbanil'+${status.index}" alt="Extra Image Preview " class="img-fluid"
+						th:src="@{${productImage.imagePath}}" />
+				</div>
+				<div>
+					<input type="file"  name="exteraImage"
+						accept="image/png, image/jpeg" >
+				</div>
+
+			</div>
+                 
+               
+               </th:block>
+
+
+             <div class="col border m-3 p-2" th:id="'exterImageRemove' +${numberImage}">
+				<div  th:id="'extraImageHeader' +${numberImage}">
+					<label>Extra  Image#[[${numberImage}]]</label>
+				</div>
+				<div>
+					<img th:id="'extraThumbanil' +${numberImage}" alt="Extra Image Preview " class="img-fluid"
+						th:src="@{/images/image-thumbnail.png}" />
+				</div>
+				<div>
+					<input type="file"  name="exteraImage"
+						accept="image/png, image/jpeg" >
+				</div>
+
+			</div>
+
+
+		</div>
+
+
+	</div>
+</body>
+
+</html>

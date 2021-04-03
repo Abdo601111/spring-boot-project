@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragment:: page_head('Products- Shopme Admin','none')"></head>
+
+<body>
+
+	<div class="container-fluid">
+		<div  th:replace="navbar:: menu"></div>
+
+		<div>
+			<h1>Manage Products</h1>
+			<a th:href="@{/products/new}"
+				class="fas fa-user-plus fa-2x icon-dark mr-2"></a> 
+				
+			
+     <div th:replace="fragment :: search_form_and_message('/products/page/1')" />
+
+
+		</div>
+
+		<div class="full-details">
+			<table
+				class="table table-bordered table-striped table-hover table-responsive-xl">
+				<thead class="thead-dark">
+					<tr>
+						<th> Id</th>
+
+                         <th>Main Image</th> 
+						<th>Product Name</th>
+                        <th>Brand</th>
+						<th>Category</th>
+						<th>Enabled</th>
+
+                            
+						<th>Action</th>
+					</tr>
+
+				</thead>
+				<tbody>
+					<tr th:each="product : ${listProducts}">
+						<td>[[${product.id}]]</td>
+						<td>
+						  <img th:src="@{${product.mainImagePath}}" style="width: 120px;height: 120px" />
+						</td>
+						<td>[[${product.name}]]</td>
+						<td ><span class="badge badge-secondary">[[${product.brand.name}]]</span></td>
+						<td ><span class="badge badge-secondary">[[${product.category.name}]]</span></td>
+						
+						
+			<td>
+			<div th:replace="fragment :: status(${product.enabled}, 'product', '/products/' + ${product.id})" />
+			
+					</td>	
+					<td>	
+			<a class="fas fa-file-alt fa-2x icon-green" th:href="@{'/products/details/'+${product.id}}" title="View Details This Product"></a>	
+			        &nbsp; 
+			<div th:replace="fragment :: edit('product', '/products/edit/' + ${product.id})" />
+					&nbsp; 
+			<div th:replace="fragment :: delete('product', ${product.id}, '/products/delete/' + ${product.id}, true)" />
+					
+      </td>
+					</tr>
+
+				</tbody>
+
+
+			</table>
+		</div>
+
+
+
+
+       
+		
+		 
+		 
+
+		<div class="modal fade text-center" id="modalDelete">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title">Delete Confirmation</h4>
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+
+					</div>
+					<div class="modal-body">
+						<span id="modalBody"></span>
+
+					</div>
+					<div class="modal-footer">
+						<a class="btn btn-success" href="" id="yesButton">Yes</a>
+
+						<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+
+					</div>
+
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+	<div th:replace="fragment:: footer"></div>
+
+	<script type="text/javascript">
+	
+	$(document).ready(function(){
+		
+		$(".link-delete").on("click",function(e){
+			e.preventDefault();
+			link = $(this);
+			userId= link.attr("userId");
+			//alert("you are Deleting");
+			$("#yesButton").attr("href",link.attr("href"));
+			$("#modalBody").text("Are You Sure You Wont To Deleting User Id : "+userId);
+			$("#modalDelete").modal();
+			
+		})
+		
+	});
+	function clearFilter(){
+		 window.location="[[@{/categories}]]";
+		}
+	
+	</script>
+</body>
+</html>
