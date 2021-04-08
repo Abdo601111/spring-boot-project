@@ -67,6 +67,22 @@ public static final int ROOT_CATEGORIES_PER_PAGE = 4;
 		}
 	}
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	private List<Category> listHierarchicalCategories(List<Category> rootCategories, String sortDir) {
 		List<Category> hierarchicalCategories = new ArrayList<>();
 		
@@ -112,6 +128,13 @@ public static final int ROOT_CATEGORIES_PER_PAGE = 4;
 	
 	
 	public Category save(Category category) {
+		
+		Category categories= category.getParent();
+		if(categories !=null) {
+			String allParentIDs= categories.getAllParentIDs() == null ? "-" : categories.getAllParentIDs();
+			allParentIDs  += String.valueOf(categories.getId()) + "-";
+			category.setAllParentIDs(allParentIDs);
+		}
 		return repo.save(category);
 	}
 	
@@ -135,6 +158,11 @@ public static final int ROOT_CATEGORIES_PER_PAGE = 4;
 		
 		return categoriesUsedInForm;
 	}
+	
+	
+	
+	
+	
 	
 	private void listSubCategoriesUsedInForm(List<Category> categoriesUsedInForm, 
 			Category parent, int subLevel) {

@@ -45,8 +45,8 @@ public class CategoryController {
 		}
 		
 		CategoryPageInfo pageInfo = new CategoryPageInfo();
-		List<Category> listCategories = service.listByPage(pageInfo, pageNum, sortDir, keyword);
-		
+		List<Category> listCategories1 = service.listByPage(pageInfo, pageNum, sortDir, keyword);
+		List<Category> listCategories = service.listAll();
 		long startCount = (pageNum - 1) * CategoryService.ROOT_CATEGORIES_PER_PAGE + 1;
 		long endCount = startCount + CategoryService.ROOT_CATEGORIES_PER_PAGE - 1;
 		if (endCount > pageInfo.getTotalElements()) {
@@ -76,7 +76,7 @@ public class CategoryController {
 	
 	@GetMapping("/category/new")
 	public String newCategory(Model model) {
-		List<Category> categorys =service.listAll();
+		List<Category> categorys =service.listCategoriesUsedInForm();
 		model.addAttribute("listCategories", categorys);
 		model.addAttribute("category", new Category());
 		model.addAttribute("pageTitle", "Create New Category");
@@ -87,15 +87,25 @@ public class CategoryController {
 
 	@PostMapping("/category/save")
 	public String save(Category category,@RequestParam("photoFile")  MultipartFile multiPart,RedirectAttributes r) throws IOException {
+		if (!multiPart.isEmpty()) {
 		String fileName= StringUtils.cleanPath(multiPart.getOriginalFilename());
 		category.setImage(fileName);
 		Category categorySave = service.save(category);
 		String uploadDir = "../categorys-image/" + categorySave.getId(); 
+		FileUploadUtil.cleanDir(uploadDir);
 		FileUploadUtil.saveFile(uploadDir, fileName, multiPart);
+		}else {
+			service.save(category);
+		}
 		r.addFlashAttribute("message", "The Category Save Successfully");
 		
 		return "redirect:/categories";
 	}
+	
+	
+	
+
+	
 	
 	
 	
@@ -104,7 +114,7 @@ public class CategoryController {
 		
 		try {
 			List<Category> categorys =service.listAll();
-			model.addAttribute("categorys", categorys);
+			model.addAttribute("listCategory", categorys);
 			Category category = service.get(id);
 			model.addAttribute("category", category);
 			model.addAttribute("pageTitle", "Edit User :" +id);

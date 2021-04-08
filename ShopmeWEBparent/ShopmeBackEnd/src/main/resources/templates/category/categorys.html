@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
 <head th:replace="fragment:: page_head('Category - Shopme Admin','none')"></head>
 
 <body>
@@ -10,7 +12,7 @@
 		<div>
 			<h1>Manage Category</h1>
 			<a th:href="@{/category/new}"
-				class="fas fa-user-plus fa-2x icon-dark mr-2"></a> 
+				class="fas fa-user-plus fa-2x icon-dark mr-2" sec:authorize="hasAuthority('Manger')"></a> 
 				
 				<a class="fas fa-file-csv fa-2x icon-dark mr-2"
 				th:href="@{/category/export/csv}" >
@@ -56,9 +58,9 @@
 							class="fas fa-circle fa-2x icon-dark"
 							th:href="@{'/category/'+${category.id} +'/enabled/true'}"> </a></td>
 						<td><a class="fas fa-edit fa-2x icon-green"
-							th:href="@{'/category/edit/' + ${category.id}}"> </a> &nbsp; <a
+							th:href="@{'/category/edit/' + ${category.id}}" sec:authorize="hasAuthority('Manger')"> </a> &nbsp; <a
 							class="fas fa-trash fa-2x icon-dark link-delete"
-							th:href="@{'/category/delete/' + ${category.id}}" th:userId="${category.id}">
+							th:href="@{'/category/delete/' + ${category.id}}" sec:authorize="hasAuthority('Manger')" th:userId="${category.id}">
 						</a></td>
 					</tr>
 
@@ -138,7 +140,7 @@
 
 			</div>
 		</div>
-	</div>
+	
 
 	<div th:replace="fragment:: footer"></div>
 

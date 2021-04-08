@@ -20,6 +20,12 @@ public class ProductImages {
 	public ProductImages() {
 		super();
 	}
+	public ProductImages(Integer id,String name, Product product) {
+		super();
+		this.name = name;
+		this.product = product;
+		this.id=id;
+	}
 	public ProductImages(String name, Product product) {
 		super();
 		this.name = name;

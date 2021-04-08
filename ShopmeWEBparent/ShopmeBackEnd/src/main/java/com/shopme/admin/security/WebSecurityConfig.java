@@ -45,7 +45,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		
-		http.authorizeRequests().antMatchers("/users/**").hasAuthority("Manger")
+		http.authorizeRequests().antMatchers("/users/**","/users/new").hasAuthority("Manger")
+		.antMatchers("/category/new","/category/delete/**","/category/save","/category/edit/**" ).hasAuthority("Manger")
+		.antMatchers("/brand/new","/brand/delete/**","/brand/save","/brand/edit/**" ).hasAuthority("Manger")
+
+		.antMatchers("/products/new","/products/delete/**","/products/save","/products/edit/**" ,"/products/check_name").hasAuthority("Manger")
 		.anyRequest()
 		.authenticated().and().formLogin().loginPage("/login")
 		.usernameParameter("email").permitAll().and().logout().permitAll()

@@ -9,6 +9,7 @@
 	
 	
 	  <div class="form-inline" th:id="'divDetails' +${status.index}">
+	  <input type="hidden" name="detailsIDs" th:value="${productDetails.id}">
 	     	<label class="m-3">Name :</label>
 	    	<input  type="text" class="form-control w-25" name="detailsName"
 	    	th:value="${productDetails.name}" >
@@ -26,6 +27,7 @@
 	
 
 		<div class="form-inline" th:id="'divDetails'+${#lists.size(product.details)}">
+		<input type="hidden" name="detailsIDs" value="0">
 		<label class="m-3">Name :</label>
 		<input  type="text" class="form-control w-25" name="detailsName" >
 		

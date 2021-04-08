@@ -41,6 +41,11 @@
 		function extraShowImageThumbanil(fileInput,index){
 		
 		var file = fileInput.files[0];
+		fileName = file.name;
+		imageNameHeaderField  = $("#imageName"+index);
+		if(imageNameHeaderField.length){
+		imageNameHeaderField.val(fileName);
+		}
 			var reder = new FileReader();
 			reder .onload = function(e){
 				$("#extraThumbanil"+index).attr("src",e.target.result);

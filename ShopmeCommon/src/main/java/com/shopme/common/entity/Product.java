@@ -3,6 +3,7 @@ package com.shopme.common.entity;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -33,10 +34,10 @@ public class Product {
 	@Column(name ="main_image",nullable = false)
 	private String mainImage;
 	
-	@OneToMany(mappedBy = "product" ,cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "product" ,cascade = CascadeType.ALL,orphanRemoval = true)
 	private Set<ProductImages> images = new HashSet<>();
 	
-	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL,orphanRemoval = true)
 	private List<ProductDetail> details = new ArrayList<>();
 
 
@@ -202,6 +203,20 @@ public class Product {
 	
 	public void addDetail(String name, String value) {
 		this.details.add(new ProductDetail(name, value, this));
+	}
+	
+	public void addDetail(Integer id,String name, String value) {
+		this.details.add(new ProductDetail(id,name, value, this));
+	}
+	public boolean containImageName(String fileName) {
+		Iterator<ProductImages> iterator=images.iterator();
+		while(iterator.hasNext()) {
+			ProductImages image = iterator.next();
+			if(image.getName().equals(fileName) ) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	

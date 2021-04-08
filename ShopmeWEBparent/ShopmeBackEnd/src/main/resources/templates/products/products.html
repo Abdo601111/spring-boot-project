@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head th:replace="fragment:: page_head('Products- Shopme Admin','none')"></head>
 
 <body>
@@ -10,10 +11,40 @@
 		<div>
 			<h1>Manage Products</h1>
 			<a th:href="@{/products/new}"
-				class="fas fa-user-plus fa-2x icon-dark mr-2"></a> 
+				class="fas fa-user-plus fa-2x icon-dark mr-2" sec:authorize="hasAuthority('Manger')"></a> 
 				
 			
-     <div th:replace="fragment :: search_form_and_message('/products/page/1')" />
+    <div th:fragment="search_form_and_message(moduleURL)">
+		<form th:action="@{/products/page/1}" class="form-inline m-3" id="searchForm">
+			<input type="hidden" name="sortField" th:value="${sortField}" />
+			<input type="hidden" name="sortDir" th:value="${sortDir}" />
+			
+			
+			Category : &nbsp; <select class="form-control" name="categoryId" id="selectedCategory"> 
+			<option value="0">All Category</option>
+			<th:block th:each="category : ${listCategory}">
+			<option th:value="${category.id}"  th:selected="(${categoryId} == ${category.id})">[[${category.name}]]</option>
+			
+			</th:block>
+			
+			</select>&nbsp;
+			
+			Filter:&nbsp;
+			<input type="search" name="keyword" th:value="${keyword}" class="form-control" required/>
+			&nbsp;&nbsp;
+			<button type="submit" class="btn btn-primary">
+				<i class="fas fa-search"></i>
+			</button>
+			&nbsp;&nbsp;
+			<button type="button" class="btn btn-secondary" onclick="clearFilter()">
+				<i class="fas fa-eraser"></i>
+			</button>
+		</form>
+		
+		<div th:if="${message != null}" class="alert alert-success text-center">
+			[[${message}]]
+		</div>		
+	</div>	
 
 
 		</div>
@@ -23,7 +54,7 @@
 				class="table table-bordered table-striped table-hover table-responsive-xl">
 				<thead class="thead-dark">
 					<tr>
-						<th> Id</th>
+						<th th:replace="fragment :: column_link('/products', 'id', 'Id', 'none')" />
 
                          <th>Main Image</th> 
 						<th>Product Name</th>
@@ -42,7 +73,12 @@
 						<td>
 						  <img th:src="@{${product.mainImagePath}}" style="width: 120px;height: 120px" />
 						</td>
-						<td>[[${product.name}]]</td>
+						<td>
+				<a class="product-details"
+				th:href="@{'/products/details/'+${product.id}}" title="View Details This Product">[[${product.name}]]</a>	
+						
+						
+						</td>
 						<td ><span class="badge badge-secondary">[[${product.brand.name}]]</span></td>
 						<td ><span class="badge badge-secondary">[[${product.category.name}]]</span></td>
 						
@@ -52,11 +88,11 @@
 			
 					</td>	
 					<td>	
-			<a class="fas fa-file-alt fa-2x icon-green" th:href="@{'/products/details/'+${product.id}}" title="View Details This Product"></a>	
+			<a class="fas fa-file-alt fa-2x icon-green product-details"  th:href="@{'/products/details/'+${product.id}}" title="View Details This Product"></a>	
 			        &nbsp; 
-			<div th:replace="fragment :: edit('product', '/products/edit/' + ${product.id})" />
+			<div th:replace="fragment :: edit('product', '/products/edit/' + ${product.id})" sec:authorize="hasAuthority('Manger')" />
 					&nbsp; 
-			<div th:replace="fragment :: delete('product', ${product.id}, '/products/delete/' + ${product.id}, true)" />
+			<div th:replace="fragment :: delete('product', ${product.id}, '/products/delete/' + ${product.id}, true)"  sec:authorize="hasAuthority('Manger')"/>
 					
       </td>
 					</tr>
@@ -66,14 +102,55 @@
 
 			</table>
 		</div>
-
-
-
-
-       
 		
-		 
-		 
+		<div class="less-details">
+			<div th:each="product : ${listProducts}" class="row m-1">
+				<div class="col-4">
+					<span th:if="${product.mainImage==null}"
+						class="fas fa-portrait fa-3x icon-silver"></span>
+						 <img th:src="@{${product.mainImagePath}}" style="width: 120px;height: 120px" />
+				</div>
+				&nbsp; 
+				<div class="col-8">
+				  <div>[[${product.id}]]</div>
+					<a class="product-details"
+				th:href="@{'/products/details/'+${product.id}}" title="View Details This Product">[[${product.name}]]</a>	
+						
+					
+					<div th:replace="fragment :: status(${product.enabled}, 'product', '/products/' + ${product.id})" />
+			
+					</td>	
+					<td>	
+			<a class="fas fa-file-alt fa-2x icon-green product-details"  th:href="@{'/products/details/'+${product.id}}" title="View Details This Product"></a>	
+			        &nbsp; 
+			<div th:replace="fragment :: edit('product', '/products/edit/' + ${product.id})" sec:authorize="hasAuthority('Manger')" />
+					&nbsp; 
+			<div th:replace="fragment :: delete('product', ${product.id}, '/products/delete/' + ${product.id}, true)"  sec:authorize="hasAuthority('Manger')"/>
+				
+
+				</div>
+			</div>
+		</div>
+		
+
+
+         <div th:replace="fragment :: pagination('/products', 'products')"></div>
+
+		<div class="modal fade text-center" id="modalDetails">
+
+			<div class="modal-dialog modal-xl">
+				<div class="modal-content"></div>
+
+
+			</div>
+
+		</div>
+
+
+
+
+
+
 
 		<div class="modal fade text-center" id="modalDelete">
 			<div class="modal-dialog">
@@ -115,7 +192,18 @@
 			$("#modalBody").text("Are You Sure You Wont To Deleting User Id : "+userId);
 			$("#modalDelete").modal();
 			
-		})
+		});
+		
+		$(".product-details").on("click",function(e){
+			e.preventDefault();
+			linkProductDetails = $(this).attr("href");
+			$("#modalDetails").modal("show").find(".modal-content").load(linkProductDetails);
+		});
+		
+		$("#selectedCategory").on("change",function(){
+			
+			$("#searchForm").submit();
+		});
 		
 	});
 	function clearFilter(){

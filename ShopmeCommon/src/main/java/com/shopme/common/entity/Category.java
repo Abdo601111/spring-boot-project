@@ -22,6 +22,8 @@ public class Category {
 		this.name=name;
 		this.alias=name;
 		this.image="default.png";
+		
+		
 	}
 	
 	
@@ -87,6 +89,8 @@ public static Category copy(int id,String name) {
 	private String image;
 	
 	private boolean enabled;
+	
+	private String allParentIDs;
 	
 	@OneToOne
 	@JoinColumn(name="parent_id")
@@ -186,6 +190,18 @@ public static Category copy(int id,String name) {
 	@Override
 	public String toString() {
 		return  name ;
+	}
+
+
+
+	public String getAllParentIDs() {
+		return allParentIDs;
+	}
+
+
+
+	public void setAllParentIDs(String allParentIDs) {
+		this.allParentIDs = allParentIDs;
 	}
 
 	
