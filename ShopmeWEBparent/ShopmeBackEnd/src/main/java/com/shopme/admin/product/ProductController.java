@@ -81,7 +81,7 @@ public class ProductController {
 		model.addAttribute("reverseSortDir", reverseSortDir);
 		model.addAttribute("keyword", keyword);		
 		model.addAttribute("listProducts", listProducts);
-		model.addAttribute("listCategory", categoryService.listAll());
+		model.addAttribute("listCategory", categoryService.listCategoriesUsedInForm());
 		
 		return "products/products";		
 	}

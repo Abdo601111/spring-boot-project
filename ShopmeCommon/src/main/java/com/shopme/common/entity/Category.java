@@ -18,62 +18,7 @@ import javax.persistence.Transient;
 @Entity
 public class Category {
 	
-	public Category(String name) {
-		this.name=name;
-		this.alias=name;
-		this.image="default.png";
-		
-		
-	}
-	
-	
-	
-	public Category(int id) {
-		super();
-		this.id = id;
-	}
 
-
-public static Category copy(Category category) {
-	Category categiry1 = new Category();
-	categiry1.setId(category.getId());
-	categiry1.setName(category.getName());
-	return categiry1;
-}
-
-public static Category copyFull(Category category) {
-	Category categiry1 = new Category();
-	categiry1.setId(category.getId());
-	categiry1.setName(category.getName());
-	categiry1.setImage(category.getImage());
-	categiry1.setAlias(category.getAlias());
-	categiry1.setEnabled(category.isEnabled());
-	return categiry1;
-}
-
-public static Category copyFull(Category category,String name) {
-	
-	Category copyCategory = Category.copyFull(category);
-	copyCategory.setName(name);
-	return copyCategory;
-}
-
-
-
-public static Category copy(int id,String name) {
-	Category categiry1 = new Category();
-	categiry1.setId(id);
-	categiry1.setName(name);
-	return categiry1;
-}
-	public Category(String name,Category ct) {
-
-		this(name);
-		this.parent=ct;
-	}
-	
-	public Category()
-	{}
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -206,6 +151,68 @@ public static Category copy(int id,String name) {
 
 	
 	
+	
+	
+	public Category(int id) {
+		super();
+		this.id = id;
+	}
+
+
+public static Category copy(Category category) {
+	Category categiry1 = new Category();
+	categiry1.setId(category.getId());
+	categiry1.setName(category.getName());
+	return categiry1;
+}
+
+
+
+public static Category copyFull(Category category) {
+	Category copyCategory = new Category();
+	copyCategory.setId(category.getId());
+	copyCategory.setName(category.getName());
+	copyCategory.setImage(category.getImage());
+	copyCategory.setAlias(category.getAlias());
+	copyCategory.setEnabled(category.isEnabled());
+	copyCategory.setHasCheldern(category.getChildren().size() > 0);
+	
+	return copyCategory;		
+}
+
+
+
+
+public static Category copyFull(Category category,String name) {
+	
+	Category copyCategory = Category.copyFull(category);
+	copyCategory.setName(name);
+	return copyCategory;
+}
+
+
+public static Category copy(int id,String name) {
+	Category categiry1 = new Category();
+	categiry1.setId(id);
+	categiry1.setName(name);
+	return categiry1;
+}
+	public Category(String name,Category ct) {
+
+		this(name);
+		this.parent=ct;
+	}
+	
+	public Category(String name) {
+		this.name=name;
+		this.alias=name;
+		this.image="default.png";
+		
+		
+	}
+	
+	public Category()
+	{}
 	
 
 }

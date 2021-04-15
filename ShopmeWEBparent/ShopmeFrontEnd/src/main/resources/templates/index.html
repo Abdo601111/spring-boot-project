@@ -1,11 +1,34 @@
 <!DOCTYPE html>
-<html>
-<head>
-<meta charset="windows-1256">
-<title>Shopme Admin</title>
+<html xmlns:th="http://www.thymeleaf.org">
+<head  th:replace="fragment:: page_head('Shopme','none')" >
+
 </head>
 <body>
-<h1>Shopme Admin FronEnd</h1>
+
+<div class="container-fluid">
+		
+		<div  th:replace="navbar:: menu"></div>
+
+		<div>
+			<h1>  Shopme By Category  </h1>
+
+		</div>
+		<div class="row">
+		  <div class="col" th:each="cat : ${listCategory}">
+		  <div ><img alt="" th:src="@{${cat.imagePath}}" width="80px" height="80px"></div>
+		  <div>
+		  <a th:href="@{'/c/' +${cat.alias}}">[[${cat.name}]]</a>
+		  </div>
+		  
+		  </div>
+		
+		</div>
+		<div th:replace="navbar:: footer"></div>
+
+	</div>
+	
+
+
 
 </body>
 </html>

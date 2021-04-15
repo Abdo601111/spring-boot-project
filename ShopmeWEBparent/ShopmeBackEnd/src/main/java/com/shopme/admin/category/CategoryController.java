@@ -6,7 +6,6 @@ import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,9 +19,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.shopme.admin.FileUploadUtil;
 import com.shopme.admin.user.UserNotFoundException;
-import com.shopme.admin.user.UserScvExporter;
 import com.shopme.common.entity.Category;
-import com.shopme.common.entity.User;
 
 @Controller
 public class CategoryController {
@@ -64,7 +61,7 @@ public class CategoryController {
 		model.addAttribute("startCount", startCount);
 		model.addAttribute("endCount", endCount);		
 		
-		model.addAttribute("listCategories", listCategories);
+		model.addAttribute("listCategories", listCategories1);
 		model.addAttribute("reverseSortDir", reverseSortDir);
 		
 		return "category/categorys";		
@@ -113,8 +110,8 @@ public class CategoryController {
 	public String edit(@PathVariable("id") Integer id,RedirectAttributes r,Model model) {
 		
 		try {
-			List<Category> categorys =service.listAll();
-			model.addAttribute("listCategory", categorys);
+			List<Category> categorys =service.listCategoriesUsedInForm();
+			model.addAttribute("listCategories", categorys);
 			Category category = service.get(id);
 			model.addAttribute("category", category);
 			model.addAttribute("pageTitle", "Edit User :" +id);
