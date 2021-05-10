@@ -5,7 +5,7 @@
 <meta http-equiv="Content-Type" content="text/thml;charset=UTF8">
 <meta name="viewport"
 	content="width=device-width,initial-scale=1.0 minimum-scale=1.0">
-<title>[[${title}]]</title>
+<title>[[${title}]]  - [[${SITE_NAME}]]</title>
 <link rel="stylesheet" type="text/css" th:href="@{/fontawsome/all.css}">
 <link rel="stylesheet" type="text/css" th:href="@{/main.css}">
 <link rel="stylesheet" type="text/css"
@@ -147,7 +147,7 @@
 
 
 <div th:fragment="footer" class="text-center m-3">
-		<p>Shopme Control Panel Copyright &copy; Shopme</p>
+		<p>[[${COPYRIGHT}]]</p>
 	</div>
 
 </body>

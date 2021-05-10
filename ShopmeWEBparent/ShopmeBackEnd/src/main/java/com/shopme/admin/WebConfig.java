@@ -19,6 +19,8 @@ public class WebConfig implements WebMvcConfigurer {
 		exposeDirectory("../brands-image",registry);
 		
 		exposeDirectory("../product-images",registry);
+		exposeDirectory("../site-logo",registry);
+
 		
 		
 	

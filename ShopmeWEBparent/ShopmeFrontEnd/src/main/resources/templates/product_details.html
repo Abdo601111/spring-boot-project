@@ -64,17 +64,17 @@
 				
 				<div>
 				List price :
-				 <span th:if="${product.discountPercent <=0}">$ [[${product.price}]]</span>
-				  <del th:if="${product.discountPercent >0}"> <span >$ [[${product.price}]]</span></del>
+				 <span th:if="${product.discountPercent <=0}">[[${CURRENCY_SEMBOL}]] [[${product.price}]]</span>
+				  <del th:if="${product.discountPercent >0}"> <span >[[${CURRENCY_SEMBOL}]] [[${product.price}]]</span></del>
 				 
 				
 				</div>
 				
 				  <div th:if="${product.discountPercent >0}">
 				  Price :
-				  <span style="font-size: larger;color: darkred">$ [[${product.discountPrice}]]</span>
+				  <span style="font-size: larger;color: darkred">[[${CURRENCY_SEMBOL}]] [[${product.discountPrice}]]</span>
 				 
-				 $ ([[${product.discountPercent}]]% Off)
+				 [[${CURRENCY_SEMBOL}]] ([[${product.discountPercent}]]% Off)
 				  
 			
 				</div>

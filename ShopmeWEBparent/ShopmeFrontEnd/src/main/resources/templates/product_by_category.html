@@ -45,12 +45,12 @@
 				  </div>
 				  
 				  <div th:if="${product.discountPercent <=0}">
-				  <span>$ [[${product.price}]]</span>
+				  <span>[[${CURRENCY_SEMBOL}]] [[${product.price}]]</span>
 				  </div>
 				  <div th:if="${product.discountPercent >0}">
-				  <span style="font-size: larger;color: darkred">$ [[${product.discountPrice}]]</span>
+				  <span style="font-size: larger;color: darkred">[[${CURRENCY_SEMBOL}]] [[${product.discountPrice}]]</span>
 				 
-				  <del> <span >$ [[${product.price}]]</span></del>
+				  <del> <span >[[${CURRENCY_SEMBOL}]] [[${product.price}]]</span></del>
 				  
 			
 				</div>
