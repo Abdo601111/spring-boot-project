@@ -8,6 +8,7 @@
 <div class="container-fluid">
 		
 		<div  th:replace="navbar:: menu"></div>
+		<div th:replace="navbar :: search_nav"></div>
 
 		
              <div  th:if="${listCategoryParent != null && !listCategoryParent.empty}">
@@ -89,15 +90,15 @@
       <span th:unless="${product.inStock}" class="text-danger">Out  Stock</span>
       
       </div>
-      <div class="mt-2">
-      <input type="text" size="5" value="1">
       
-      </div>
 
+<th:block th:if="${product.inStock}">
+  <div th:replace="card/quantity_control :: quantity_control(1,${product.id})"></div>
     <div class="mt-3">
-      <input type="button"  value="Add To Card" class="btn btn-primary">
+      <input type="button"  value="Add To Card" id="buttonAdd2Card" class="btn btn-primary">
       
       </div>
+      </th:block>
 
       </div>
 
@@ -135,13 +136,22 @@
 		  
 		  
 		  </div>
+			 <div th:replace="exterImages:: content"></div>
 		
 		</div>
-         <div th:replace="exterImages:: content"></div>
-		<div th:replace="navbar:: footer"></div>
-
+        <div th:replace="navbar:: footer"></div>
+         <div th:replace="fragment:: modal_dialog"></div>
+	
 	</div>
+		
 	<script type="text/javascript">
+	contextPath = "[[@{/}]]";
+	productId = "[[${product.id}]]";
+	 var csrfHeaderName = "[[${_csrf.headerName}]]";
+	var csrfValue = "[[${_csrf.token}]]";
+		
+	
+	
 	  $(document).ready(function(){
 		  
 		 bigImage = $("#bigImage");
@@ -163,6 +173,11 @@
 	
 	
 	</script>
+	<script type="text/javascript" th:src="@{/js/quantity_control.js}"></script>
+	<script type="text/javascript" th:src="@{/js/add_to_card.js}"></script>
+	<script type="text/javascript" th:src="@{/js/common.js}"></script>
+		
+	
 
 </body>
 </html>

@@ -1,0 +1,30 @@
+server:
+  port: 80
+  servlet:
+    context-path: /Shopme
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    password: hbstudent
+    url: 'jdbc:mysql://localhost:3306/shopme '
+    username: hbstudent
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  security:
+    oauth2:
+      client:
+        registration:
+          google: 
+            client-id: 933836409775-ggdalfm00suiqus58dcla92f0kkf4q3e.apps.googleusercontent.com
+            client-secret: f1ChN00Sq-4f8Ams3EoYKD42
+            scope:
+            - email
+            - profile
+          facebook:
+            client-id: 140331854754544
+            client-secret: 9e3fa7402b8cd3ca5288a6a1b01ec820
+            scope:
+            - email
+            - p

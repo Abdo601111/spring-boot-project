@@ -62,6 +62,14 @@ public class Product {
 	@ManyToOne
 	@JoinColumn(name="brand_id")
 	private Brand brand;
+	
+	public Product () {
+		
+	}
+public Product (Integer id) {
+		this.id= id;
+	}
+	
 	public Integer getId() {
 		return id;
 	}

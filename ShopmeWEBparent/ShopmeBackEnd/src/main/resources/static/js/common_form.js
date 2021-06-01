@@ -53,7 +53,7 @@
 			if(fileSize > 5048576){
 				fileInput.setCustomValidity("Thse File Must 1MB");
 				fileInput.reportValidity();
-				return true;
+				return false;
 			}else{
 				fileInput.setCustomValidity("");
 				return true;

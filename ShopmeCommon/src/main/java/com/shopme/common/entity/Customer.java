@@ -1,9 +1,12 @@
 package com.shopme.common.entity;
 
+import java.beans.Transient;
 import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -39,6 +42,11 @@ public class Customer {
 	private String verivicationCode;
 	private boolean enabled;
 	private Date createdDate;
+	@Enumerated(EnumType.STRING)
+	@Column(length = 8)
+	private AuthenticationType authenticationType;
+	
+	private  String resetPasswordToken;
 	
 	@ManyToOne
 	private Country country;
@@ -166,6 +174,29 @@ public class Customer {
 	public void setCountry(Country country) {
 		this.country = country;
 	}
+	
+	
+	
+	
+	
+
+	public AuthenticationType getAuthenticationType() {
+		return authenticationType;
+	}
+
+	public void setAuthenticationType(AuthenticationType authenticationType) {
+		this.authenticationType = authenticationType;
+	}
+
+	
+	
+	public String getResetPasswordToken() {
+		return resetPasswordToken;
+	}
+
+	public void setResetPasswordToken(String resetPasswordToken) {
+		this.resetPasswordToken = resetPasswordToken;
+	}
 
 	@Override
 	public String toString() {
@@ -182,6 +213,13 @@ public class Customer {
 	}
 	
 	
+	@Transient
+	public String getShortName() {
+		if (firstName.length() + lastName.length()  > 70 ) {
+			return firstName +lastName .substring(0, 70).concat("...");
+		}
+		return firstName +" " +lastName;
+	}
 	
 	
 	

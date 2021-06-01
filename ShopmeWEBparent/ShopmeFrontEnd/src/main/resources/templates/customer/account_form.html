@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head  th:replace="fragment:: page_head('Customer Details','none')" >
+
+</head>
+<body>
+
+<div class="container-fluid">
+		
+		<div  th:replace="navbar:: menu"></div>
+
+		<div class="text-center">
+			<h1>  Customer Details  </h1>
+
+		</div>
+		
+		<div th:if="${message != null}" class="alert alert-success text-center">[[${message}]]</div>
+	
+		
+		<div>&nbsp;</div>
+		
+		<form th:action="@{/update_account_details}" method="post" th:object="${customer}" 
+		style="max-width: 600px;margin: 0 auto;">
+		
+		 <input type="hidden"  th:field="*{id}">
+		  <div class="border border-decondary rounded p-3">
+		  
+		  
+		  <div class="form-group row">
+		       <label class="col-sm-4 col-form-lable">Authentication Type</label>
+		       <div class="col-sm-8">
+		         <input type="text" class="form-control" th:field="*{authenticationType}" readonly="readonly">
+		       </div>
+		    </div>
+		  
+		  
+		  <div class="form-group row">
+		       <label class="col-sm-4 col-form-lable">Email</label>
+		       <div class="col-sm-8">
+		         <input type="text" class="form-control" th:field="*{email}" readonly="readonly">
+		       </div>
+		    </div>
+		  
+		  
+		  
+		  
+		    <div class="form-group row">
+		       <label class="col-sm-4 col-form-lable">First Name</label>
+		       <div class="col-sm-8">
+		         <input type="text" class="form-control" th:field="*{firstName}" required maxlength="45">
+		       </div>
+		    </div>
+		    
+		    <div class="form-group row">
+		       <label class="col-sm-4 col-form-lable">Last Name</label>
+		       <div class="col-sm-8">
+		         <input type="text" class="form-control" th:field="*{lastName}" required maxlength="45">
+		       </div>
+		    </div>
+		    
+		    
+		    
+		    
+		    <div class="form-group row">
+		       <label class="col-sm-4 col-form-lable">Password</label>
+		       <div class="col-sm-8">
+		         <input type="password" class="form-control" th:field="*{password}" required maxlength="45"
+		         oninput="chechPasswordMatch(document.getElementById('confirmPassword'))">
+		       </div>
+		    </div>
+		    
+		    <div class="form-group row">
+		       <label class="col-sm-4 col-form-lable">Confirm Password</label>
+		       <div class="col-sm-8">
+		         <input type="password" class="form-control" id="confirmPassword" required maxlength="45" 
+		          oninput="chechPasswordMatch(this)"
+		         >
+		       </div>
+		    </div>
+		    
+		     <div class="form-group row">
+		       <label class="col-sm-4 col-form-lable">Phone Number</label>
+		       <div class="col-sm-8">
+		         <input type="text" class="form-control" th:field="*{phoneNumber}" required maxlength="45">
+		       </div>
+		    </div>
+		    
+		     <div class="form-group row">
+		       <label class="col-sm-4 col-form-lable">Address Line 1</label>
+		       <div class="col-sm-8">
+		         <input type="text" class="form-control" th:field="*{addressLine1}" maxlength="45">
+		       </div>
+		    </div>
+		    
+		     <div class="form-group row">
+		       <label class="col-sm-4 col-form-lable">Address Line 2</label>
+		       <div class="col-sm-8">
+		         <input type="text" class="form-control" th:field="*{addressLine2}"  maxlength="45">
+		       </div>
+		    </div>
+		    
+		     <div class="form-group row">
+		       <label class="col-sm-4 col-form-lable">City</label>
+		       <div class="col-sm-8">
+		         <input type="text" class="form-control" th:field="*{sity}"  maxlength="45">
+		       </div>
+		    </div>
+		    
+		     <div class="form-group row">
+		       <label class="col-sm-4 col-form-lable">Country </label>
+		       <div class="col-sm-8">
+		       <select class="form-control" th:field="*{country}">
+		         <th:block th:each="country : ${countries}">
+		           <option th:value="${country.id}">[[${country.name}]]</option>
+		         
+		         </th:block>
+		       
+		       
+		       </select>
+		       
+		       
+		       </div>
+		    </div>
+		    
+		     <div class="form-group row">
+		       <label class="col-sm-4 col-form-lable">State </label>
+		       <div class="col-sm-8">
+		         <input type="text" class="form-control" th:field="*{state}"  maxlength="45" list="dataList">
+		         <datalist id="dataList"></datalist>
+		       </div>
+		    </div>
+		    
+		    <div class="form-group row">
+		       <label class="col-sm-4 col-form-lable">Postal Code  </label>
+		       <div class="col-sm-8">
+		         <input type="text" class="form-control" th:field="*{postalode}"  maxlength="45">
+		       </div>
+		    </div>
+		    
+		    
+		    
+		    
+		    
+		  
+		  <div class="text-center">
+		    <input type="submit" class="btn btn-primary" value="Update">
+		  </div>
+		   
+		  
+		  
+		  </div>
+		</form>
+		
+		
+		
+		<div th:replace="navbar:: footer"></div>
+
+	</div>
+	
+	
+
+
+</body>
+</html>

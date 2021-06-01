@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragment:: page_head('Customer - Shopme Admin','none')"></head>
+
+<body>
+
+	<div class="container-fluid">
+		<div  th:replace="navbar:: menu"></div>
+
+		<div>
+			<h1>Manage Customer</h1>
+			
+				<a th:href="@{/users/export/csv}"
+				
+				class="fas fa-file-csv fa-2x icon-dark mr-2"> </a> 
+
+
+
+		</div>
+		<div th:if="${message != null}"
+			class="alert alert-success text-center">[[${message}]]</div>
+		<div>
+			<form th:action="@{/customer/page/1}" class="form-inline m-3">
+				Filter : &nbsp; <input type="search" name="keyWord"
+					th:value="${keyWord}" class="form-control" required /> &nbsp;
+				&nbsp;
+				<button type="submit" class="btn btn-primary">
+					<i class="fas fa-search"></i>
+				</button>
+				&nbsp; <input type="button" class="btn btn-danger" value="Clear"
+					onclick="clearFilter()" />
+
+			</form>
+
+		</div>
+
+		<div class="full-details">
+			<table
+				class="table table-bordered table-striped table-hover table-responsive-xl">
+				<thead class="thead-dark">
+					<tr>
+						<th>Customer Id</th>
+
+						<th>First Name</th>
+
+						<th>Last Name</th>
+
+						<th>Email</th>
+
+						<th>City</th>
+						<th>State</th>
+						<th>Country</th>
+
+						<th>Enable</th>
+						<th>Action</th>
+					</tr>
+
+				</thead>
+				<tbody>
+					<tr th:each="customer : ${list_customer}">
+						<td>[[${customer.id}]]]</td>
+						
+						<td>[[${customer.firstName}]]</td>
+						<td>[[${customer.lastName}]]</td>
+						<td>[[${customer.email}]]</td>
+						<td>[[${customer.sity}]]</td>
+						<td>[[${customer.state}]]</td>
+						<td>[[${customer.country.name}]]</td>
+						<td><a th:if="${customer.enabled==true}"
+							class="fas fa-check-circle fa-2x icon-green"
+							th:href="@{'/customer/'+${customer.id} +'/enabled/false'}"
+							title="Edit User"> </a> <a th:if="${customer.enabled==false}"
+							class="fas fa-circle fa-2x icon-dark"
+							th:href="@{'/customer/'+${customer.id} +'/enabled/true'}"> </a></td>
+						<td>
+						<a class="fas fa-file-alt fa-2x icon-green product-details"  th:href="@{'/customer/details/'+${customer.id}}" title="View Details This Product"></a>	
+			        &nbsp; 
+						
+						<a class="fas fa-edit fa-2x icon-green"
+							th:href="@{'/customer/edit/' + ${customer.id}}"> </a> &nbsp; <a
+							class="fas fa-trash fa-2x icon-dark link-delete"
+							th:href="@{'/customer/delete/' + ${customer.id}}" th:userId="${customer.id}">
+						</a></td>
+					</tr>
+
+				</tbody>
+
+
+			</table>
+		</div>
+
+
+		<div class="less-details">
+			<div th:each="customer : ${list_customer}" class="row m-1">
+				
+				<div class="col-8">
+					<div>[[${customer.id}]]</div>
+						
+						<div>[[${customer.shortName}]]</div>
+						
+						<div>[[${customer.email}]]</div>
+					<div>
+						<a th:if="${customer.enabled==true}"
+							class="fas fa-check-circle fa-2x icon-green"
+							th:href="@{'/customer/'+${customer.id} +'/enabled/false'}"
+							title="Edit User"> </a> <a th:if="${customer.enabled==false}"
+							class="fas fa-circle fa-2x icon-dark"
+							th:href="@{'/customer/'+${customer.id} +'/enabled/true'}"> </a>
+						
+						<a class="fas fa-file-alt fa-2x icon-green product-details"  th:href="@{'/customer/details/'+${customer.id}}" title="View Details This Product"></a>	
+			        &nbsp; 
+						
+						<a class="fas fa-edit fa-2x icon-green"
+							th:href="@{'/customer/edit/' + ${customer.id}}"> </a> &nbsp; <a
+							class="fas fa-trash fa-2x icon-dark link-delete"
+							th:href="@{'/customer/delete/' + ${customer.id}}" th:userId="${customer.id}">
+						</a>
+
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+
+<!-- 
+		<div class="text-center m-1" th:if="${totalItem >0}">
+			<span>Showing Users # [[${startCount}]] to [[${endCount}]] of
+				[[${totalItem}]]</span>
+		</div>
+		<div class="text-center m-1" th:unless="${totalItem >0}">
+			<span> No User Found</span>
+		</div>
+
+
+		<div th:if="${totalPage > 1}">
+			<nav aria-label="Page navigation example">
+				<ul class="pagination justify-content-center flex-wrap">
+
+					<li
+						th:class="${currentPage > 1 ? 'page-item' : 'page-item disabled' }">
+						<a class="page-link" th:href="@{/users/page/1}">First</a>
+					</li>
+					<li
+						th:class="${currentPage > 1 ? 'page-item' : 'page-item disabled' }">
+						<a class="page-link"
+						th:href="@{'/users/page/' + ${currentPage -1}}">Previous</a>
+					</li>
+
+					<li
+						th:class="${currentPage !=i ? 'page-item' : 'page-item active' }"
+						th:each="i : ${#numbers.sequence(1,totalPage)}"><a
+						class="page-link" th:href="@{'/users/page/' + ${i}}">[[${i}]]</a>
+					</li>
+
+					<li
+						th:class="${currentPage < totalPage ? 'page-item' : 'page-item disabled' }">
+						<a class="page-link"
+						th:href="@{'/users/page/' + ${currentPage +1}}">Next</a>
+					</li>
+					<li
+						th:class="${currentPage < totalPage ? 'page-item' : 'page-item disabled' }">
+						<a class="page-link" th:href="@{'/users/page/' + ${totalPage}}">Last</a>
+					</li>
+
+				</ul>
+			</nav>
+
+		</div>
+		 -->
+		 
+		 <div th:replace="fragment :: pagination('/customers', 'customer')"></div>
+		
+		
+		
+
+ 
+		<div class="modal fade text-center" id="modalDelete">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title">Delete Confirmation</h4>
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+
+					</div>
+					<div class="modal-body">
+						<span id="modalBody"></span>
+
+					</div>
+					<div class="modal-footer">
+						<a class="btn btn-success" href="" id="yesButton">Yes</a>
+
+						<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+
+					</div>
+
+				</div>
+
+			</div>
+		</div>
+	</div>
+	
+	<div class="modal fade text-center" id="modalDetails">
+
+			<div class="modal-dialog modal-xl">
+				<div class="modal-content"></div>
+
+
+			</div>
+
+		</div>
+
+   
+	<div th:replace="fragment:: footer"></div>
+
+	<script type="text/javascript">
+	
+	$(document).ready(function(){
+		
+		$(".link-delete").on("click",function(e){
+			e.preventDefault();
+			link = $(this);
+			userId= link.attr("userId");
+			//alert("you are Deleting");
+			$("#yesButton").attr("href",link.attr("href"));
+			$("#modalBody").text("Are You Sure You Wont To Deleting User Id : "+userId);
+			$("#modalDelete").modal();
+			
+		});
+		$(".product-details").on("click",function(e){
+			e.preventDefault();
+			linkProductDetails = $(this).attr("href");
+			$("#modalDetails").modal("show").find(".modal-content").load(linkProductDetails);
+		});
+		
+		
+	
+		
+		
+	});
+	
+	function clearFilter(){
+		 window.location="[[@{/customers}]]";
+		}
+	
+	</script>
+</body>
+</html>

@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.shopme.admin.FileUploadUtil;
+
 import com.shopme.common.entity.User;
 
 
@@ -28,9 +29,8 @@ public class UserController {
 
 	@Autowired
 	private UserService service;
-	
 	@GetMapping("/users")
-	public String listAll(Model model) {
+public String listAll(Model model) {
 		
 		model.addAttribute("list_user", service.listAll());
 		
@@ -38,7 +38,7 @@ public class UserController {
 	}
 	
 	@GetMapping("/users/page/{pageNum}")
-	public String listByPage(@PathVariable(name ="pageNum")int pageNum,Model model,@Param("keyWord")String keyWord ) {
+	public String listByPage( @PathVariable(name ="pageNum")int pageNum,Model model,@Param("keyWord")String keyWord ) {
 		Page <User>pageUser= service.ListPage(pageNum,keyWord);
 		List<User> listuser= pageUser.getContent();
 		long startCount = (pageNum -1) * service.PAGE_NUMPER +1;
@@ -58,6 +58,9 @@ public class UserController {
 		
 		return "users";
 	}
+
+	
+	
 	
 	@GetMapping("/users/new")
 	public String cresteUser(Model model) {
