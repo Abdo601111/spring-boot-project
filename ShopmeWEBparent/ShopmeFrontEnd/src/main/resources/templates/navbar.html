@@ -10,7 +10,7 @@ xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 				<a class="navbar-brand" th:href="@{/}"> 
 				<img alt="" th:src="@{${SITE_LOGO}}">
 				</a>
-				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#topNavbar">
+				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#topNavbar , #searchNavbar">
 				<span class="navbar-toggler-icon"></span>
 				</button>
 				<div class="collapse navbar-collapse" id="topNavbar">
@@ -78,7 +78,7 @@ xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 					</li>
 					
 					<li class="nav-item">
-						<a class="nav-link" href="">Addresses</a>
+						<a class="nav-link" th:href="@{/address_book}">Address Book</a>
 					</li>
 										
 					<li class="nav-item">

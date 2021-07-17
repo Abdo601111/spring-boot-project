@@ -51,11 +51,12 @@ xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 						   <a class="nav-link" th:href="@{/customers}">Customers</a>
 						</li>
 						<li class="nav-item">
-						   <a class="nav-link" th:href="@{/shipping}">Shipping</a>
+						   <a class="nav-link" th:href="@{/shipping_rates}">Shipping Rates</a>
 						</li>
 						<li class="nav-item">
 						   <a class="nav-link" th:href="@{/orders}">Orders</a>
 						</li>
+						
 						<li class="nav-item">
 						   <a class="nav-link" sec:authorize="hasAuthority('Manger')" th:href="@{/report}">Sale Report</a>
 						</li>
@@ -65,9 +66,12 @@ xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 						<li class="nav-item">
 						   <a class="nav-link" th:href="@{/menus}">Menus</a>
 						</li>
+						
 						<li class="nav-item">
 						   <a class="nav-link" sec:authorize="hasAuthority('Manger')"th:href="@{/settings}">Settings</a>
 						</li>
+						
+						
 						<li>
 						  <span class="fas fa-user fa-2x icon-silver"></span>
 						</li>

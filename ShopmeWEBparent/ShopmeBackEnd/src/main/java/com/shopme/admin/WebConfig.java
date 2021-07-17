@@ -9,7 +9,7 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import com.shopme.admin.paging.PagingAndSortingArgmentResolver;
+import com.shopme.admin.paging.PagingAndSortingArgumentResolver;
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
@@ -40,7 +40,7 @@ public class WebConfig implements WebMvcConfigurer {
 	}
 	@Override
 	public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
-		resolvers.add(new PagingAndSortingArgmentResolver());
+		resolvers.add(new PagingAndSortingArgumentResolver());
 		
 	}
 

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragment:: page_head('Address Book','none')">
+
+</head>
+<body>
+
+	<div class="container-fluid">
+
+		<div th:replace="navbar:: menu"></div>
+		<div th:replace="navbar :: search_nav"></div>
+
+		<div class="text-center">
+			<h1 class="h4">Your Address Book</h1>
+
+		</div>
+		<div th:if="${message != null}"
+			class="alert alert-success text-center">[[${message}]]</div>
+	
+
+          <div class="text-center">
+			<a th:href="@{/address_book/new}">Add New Address</a>
+
+		</div>
+		<div class="row m-1">
+			<div class="col-sm-6 mt-1">
+				<div class="card" th:classappend="${usePrimaryAddressDefault ? 'bg-warning' : ''}">
+					<div class="card-header">
+						<div class="row">
+							<div class="col">
+								<b>Your primary Address</b>
+								<th:block th:if="${usePrimaryAddressDefault}" >
+								<span class="text-danger">[ Default]]</span>
+								
+								</th:block>
+								<th:block th:unless="${usePrimaryAddressDefault}">
+								<a th:href="@{'/address_book/default/0'}">[Set As Default]</a>
+								
+								</th:block>
+							</div>
+							<div class="col">
+								<div class="float-right">
+								  <a class="fas fa-edit icon-darck" title="Edit your Primary Address"
+								  th:href="@{/account_details(redirect=address_book)}"></a>
+								</div>
+							</div>
+						</div>
+
+					</div>
+					<div class="card-body">
+					
+					[[${customer.address}]]
+					
+					</div>
+
+				</div>
+
+			</div>
+			<th:block th:each="address ,status : ${listAddress}">
+			
+			  <div class="col-sm-6 mt-1">
+				<div class="card" th:classappend="${address.defaultForshipping ? 'bg-warning' : ''}">
+					<div class="card-header">
+						<div class="row">
+							<div class="col">
+								<b> Address  [[${status.count+1}]]</b>
+								<th:block th:if="${address.defaultForshipping}">
+								<span class="text-danger">[ Default]</span>
+								
+								</th:block>
+								<th:block th:unless="${address.defaultForshipping}">
+								<a th:href="@{'/address_book/default/'+ ${address.id}}">[Set As Default]</a>
+								
+								</th:block>
+							</div>
+							<div class="col">
+								<div class="float-right">
+								  <a class="fas fa-edit icon-darck" title="Edit your  Address"
+								  th:href="@{'/address_book/edit/'+${address.id}}"></a>
+							          &nbsp;
+								  <a class="fas fa-trash icon-darck linkDelete" title="Delete your Address"
+								  th:entityId="${address.id}"
+								  th:href="@{'/address_book/delete/'+${address.id}}"></a>
+								
+								</div>
+								
+								
+								  
+							</div>
+						</div>
+
+					</div>
+					<div class="card-body">
+					
+					[[${address.address}]]
+					
+					</div>
+
+				</div>
+
+			</div>
+			
+			</th:block>
+
+
+		</div>
+
+
+
+
+
+
+		<div th:replace="navbar:: footer"></div>
+
+	</div>
+
+
+
+
+</body>
+</html>

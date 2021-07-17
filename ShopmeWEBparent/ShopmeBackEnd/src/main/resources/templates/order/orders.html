@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head th:replace="fragment:: page_head('Order - Shopme Admin','none')"></head>
+
+<body>
+
+	<div class="container-fluid">
+		<div  th:replace="navbar:: menu"></div>
+
+		<div>
+			<h1>Manage Orders</h1>
+			</div>
+			
+			
+     <div th:replace="fragment :: search_form_and_message('/orders/page/1')" />
+
+
+		</div>
+
+		<div class="full-details">
+			<table
+				class="table table-bordered table-striped table-hover table-responsive-xl">
+				<thead class="thead-dark">
+					<tr>
+						<th> Id</th>
+
+                         <th>Customer Name</th> 
+						
+
+						<th>Total</th>
+
+                  	<th th:replace="fragment :: column_link('/orders', 'orderTime', 'Order Time', 'none')" />
+                            
+						<th>Destination</th>
+						<th>Payment Method</th>
+						<th>Status</th>
+						<th>Action</th>
+					</tr>
+
+				</thead>
+				<tbody>
+					<tr th:each="order : ${listOrders}">
+						<td>[[${order.id}]]</td>
+						
+						<td>[[${order.customer.fullName}]]</td>
+						<td>[[${order.total}]]</td>
+						<td>[[${order.orderTime}]]</td>
+						<td>[[${order.destination}]]</td>
+					    <td>[[${order.paymentMethod}]]</td>
+					     <td>[[${order.status}]]</td>
+						
+						
+
+						
+						
+						<td>
+						<a class="fas fa-file-alt fa-2x icon-green linkOrderDetail"
+							th:href="@{'/orders/detail/' + ${order.id}}"
+							title="View details of this order"
+							></a>					
+						&nbsp; 
+						
+						<a class="fas fa-edit fa-2x icon-green"
+							th:href="@{'/orders/edit/' + ${order.id}}"> </a> &nbsp; <a
+							class="fas fa-trash fa-2x icon-dark link-delete"
+							th:href="@{'/orders/delete/' + ${order.id}}" th:userId="${order.id}">
+						</a></td>
+					</tr>
+
+				</tbody>
+
+
+			</table>
+		</div>
+
+<div class="less-details">
+			<div th:each="order : ${listOrders}" class="row m-1">
+				
+				<div class="col-8">
+				     <div>[[${order.id}]]</div>
+					<div>[[${order.customer.fullName}]]</div>
+					<div>[[${order.orderTime}]]</div>
+					<div>[[${order.status}]]</div>
+					<div>
+						<a class="fas fa-file-alt fa-2x icon-green linkOrderDetail"
+							th:href="@{'/orders/detail/' + ${order.id}}"
+							title="View details of this order"
+							></a>					
+						&nbsp; 
+						
+						<a class="fas fa-edit fa-2x icon-green"
+							th:href="@{'/orders/edit/' + ${order.id}}"> </a> &nbsp; <a
+							class="fas fa-trash fa-2x icon-dark link-delete"
+							th:href="@{'/orders/delete/' + ${order.id}}" th:userId="${order.id}">
+						</a>
+
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+
+
+  
+
+		 
+		 <div th:replace="fragment :: pagination('/orders', 'orders')"></div>
+	
+		 
+		
+		 
+		 
+
+		<div th:replace="modal_fragments :: confirm_modal" />
+	
+	<div class="modal fade" id="customerDetailModal">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+			</div>
+		</div>
+	</div>
+
+	<div class="modal fade" id="orderDetailModal">
+		<div class="modal-dialog modal-xl">
+			<div class="modal-content">
+			</div>
+		</div>
+	</div>
+		
+
+	<div th:replace="fragment:: footer"></div>
+<script type="text/javascript" th:src="@{js/common_list.js}"></script>
+	<script type="text/javascript">
+	
+	$(document).ready(function() {
+		handleLinkViewCustomerDetails();
+		handleLinkViewOrderDetails();
+		handleLinkDeleteOrder();		
+	});
+	
+	function handleLinkDeleteOrder() {
+		$(".link-delete").on("click", function(e) {
+			e.preventDefault();
+			//$("#confirmModal").modal();
+		showDeleteConfirmModal($(this), 'order');
+		});		
+	}
+	
+	function handleLinkViewCustomerDetails() {
+		$(".linkCustomerDetail").on("click", function(e) {
+			e.preventDefault();
+			linkDetailURL = $(this).attr("href");
+			$("#customerDetailModal").modal("show").find(".modal-content").load(linkDetailURL);
+		});			
+	}
+	
+	function handleLinkViewOrderDetails() {
+		$(".linkOrderDetail").on("click", function(e) {
+			e.preventDefault();
+			linkDetailURL = $(this).attr("href");
+			$("#orderDetailModal").modal("show").find(".modal-content").load(linkDetailURL);
+		});		
+	}
+
+	</script>
+</body>
+</html>

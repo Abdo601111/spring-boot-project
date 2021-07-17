@@ -66,5 +66,11 @@ public class CardService {
 		
 	}
 	
+	public void deleteByCustomer(Customer customer) {
+		repo.deleteByCustomer(customer.getId());
+		
+		
+	}
+	
 	
 }

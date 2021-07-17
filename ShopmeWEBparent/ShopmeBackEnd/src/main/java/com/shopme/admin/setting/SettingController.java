@@ -105,6 +105,16 @@ public class SettingController {
 		return "redirect:/settings";
 		
 	}
+	
+	@PostMapping("/payment/save")
+	public String getPayment(HttpServletRequest request,RedirectAttributes ra) {
+		List<Setting>ListAllPaymet= service.getByPayment();
+		
+		updateSettingValuesFromForm(request,ListAllPaymet);
+		ra.addFlashAttribute("message","The Maile payment Have Been Save");
+		return "redirect:/settings#payment";
+		
+	}
 
 	
 

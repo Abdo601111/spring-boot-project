@@ -53,5 +53,14 @@ public class CustomerSettingBag extends SettingBag {
 		return super.getValue("CUSTOMER_VERFAY_CONTENT");
 	}
 	
+
+	public String getOrderVerifaySubject (){
+		return super.getValue("ORDER_CONFIRMATION_SUBJECT");
+	}
+	
+	public String getOrderVerifayContent() {
+		return super.getValue("ORDER_CONFIRMATION_CONTENT");
+	}
+	
 	
 }

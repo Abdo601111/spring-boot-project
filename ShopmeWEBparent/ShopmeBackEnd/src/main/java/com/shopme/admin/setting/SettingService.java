@@ -43,4 +43,8 @@ public class SettingService {
 		return repo.findBySettingCategory(SettingCategory.MAIL_TEMPLATES);
 	}
 	
+	public List<Setting> getByPayment(){
+		return repo.findBySettingCategory(SettingCategory.PAYMENT);
+	}
+	
 }

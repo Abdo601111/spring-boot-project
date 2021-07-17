@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.shopme.common.entity.Currency;
 import com.shopme.common.entity.Setting;
 import com.shopme.common.entity.SettingCategory;
 import com.shopme.customer.CustomerSettingBag;
@@ -14,6 +15,7 @@ public class SettingService {
 	
 	@Autowired
 	private SettingRepository repo;
+	@Autowired private CurrencyRepository currencyRepo;
 	
 	
 	public List<Setting> getGenerarSetting() {
@@ -36,4 +38,24 @@ public class SettingService {
 		return new CustomerSettingBag(setting);
 	}
 	
+	
+	public PaymentSettingPage paymentSettingBag() {
+		List<Setting> setting=repo.findBySettingCategory(SettingCategory.PAYMENT);
+		return new  PaymentSettingPage(setting);
+	}
+	
+	
+	
+	
+	public String getCurrencyCode() {
+		Setting setting = repo.findByKey("CURRENCY_ID");
+		Integer currencyId = Integer.parseInt(setting.getValue());
+		Currency currency = currencyRepo.findById(currencyId).get();
+		
+		return currency.getCode();
+	}
+
+
 }
+
+

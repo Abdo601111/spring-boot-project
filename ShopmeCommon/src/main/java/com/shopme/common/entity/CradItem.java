@@ -11,6 +11,7 @@ import javax.persistence.ManyToOne;
 @Entity
 public class CradItem {
 	
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
@@ -19,6 +20,9 @@ public class CradItem {
 	@ManyToOne
 	private Product product;
 	private int quantity;
+	
+	@javax.persistence.Transient
+	private float shippingCost;
 	
 	public CradItem() {
 		
@@ -61,6 +65,16 @@ public class CradItem {
 		return product.getDiscountPrice() * quantity;
 	}
 
+	@Transient
+	public float getShippingCost() {
+		return shippingCost;
+	}
+
+	public void setShippingCost(float shippingCost) {
+		this.shippingCost = shippingCost;
+	}
+
+	
 	
 	
 	
