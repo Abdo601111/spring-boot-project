@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragment:: page_head('My Orders','none')"></head>
+
+<body>
+
+	<div class="container-fluid">
+	    <div th:replace="navbar:: menu"></div>
+		<div th:replace="navbar :: search_nav"></div>
+
+
+		<div>
+			<h1>My Orders</h1>
+
+		</div>
+		
+		<div th:if="${message != null}"
+			class="alert alert-success text-center">[[${message}]]</div>
+		<div>
+			<form th:action="@{/orders/page/1}" class="form-inline m-3">
+			<input type="hidden" name="sortField" th:value="@{sortField}">
+			<input type="hidden" name="sortDir" th:value="@{sortDir}">
+				Filter : &nbsp; <input type="search" name="keyword"
+					th:value="${keyword}" class="form-control" required /> &nbsp;
+				&nbsp;
+				<button type="submit" class="btn btn-primary">
+					<i class="fas fa-search"></i>
+				</button>
+				&nbsp; <input type="button" class="btn btn-danger" value="Clear"
+					onclick="clearFilter()" />
+
+			</form>
+
+		</div>
+
+		<div class="full-details">
+			<table
+				class="table table-bordered table-striped table-hover table-responsive-xl">
+				<thead class="thead-dark">
+					<tr>
+						<th>Id</th>
+
+						<th>Order Time</th>
+
+					<th >Product</th>
+					<th >Total</th >
+
+						<th>status</th>
+
+						<th></th>
+						
+					</tr>
+
+				</thead>
+				<tbody>
+					<tr th:each="order : ${listOrders}">
+						<td>[[${order.id}]]]</td>
+						
+						<td>[[${order.orderTime}]]</td>
+						<td th:utext="${order.productNames}"></td>
+						<td>[[${order.total}]]</td>
+						<td th:class="'textOrderStatus' +${order.id}">[[${order.status}]]</td>
+						<td>
+						<a class="fas fa-file-alt fa-2x icon-green  linkOrderDetail"
+						th:href="@{'/order/detail/' + ${order.id}}" title="View details of this order"></a>					
+						
+						
+						<th:block th:if="${order.returnRequested == false && order.delevered == true && order.returned==false}">
+						&nbsp;&nbsp;&nbsp;
+					<a class="fas fa-undo fa-2x icon-dark linkReturnOrder" 
+					 href="" th:classappend="'linkReturn' + ${order.id}" th:orderId="${order.id}" title="Return The Order"></a>					
+						
+						
+						</th:block>
+						
+						</td>
+					</tr>
+
+				</tbody>
+
+
+			</table>
+		</div>
+		
+		
+
+
+		<div class="less-details p-2">
+		    
+		    
+		    <th:block th:each="order : ${listOrders}" class="row m-1">
+
+				<div class="row m-1">
+
+					<div class="card">
+						<div class="card-header">
+							<div class="row">
+								<div class="col">
+
+									<span>Order Id #[[${order.id}]]</span>
+								</div>
+
+								<div class="col">
+									<div class="float-right">
+
+										<a class="fas fa-file-alt fa-2x icon-green " 
+										th:href="@{'/order/detail/' + ${order.id}}" title="View details of this order"></a>
+                                        <th:block th:if="${order.returnRequested == false && order.delevered == true && order.returned==false}">
+					                      <a class="fas fa-undo fa-2x icon-dark linkReturnOrder"  
+					                      href=""   th:classappend="'linkReturn' + ${order.id}"  th:orderId="${order.id}"  title="Return The Order"></a>					
+						             </th:block>
+                                </div>
+								</div>
+
+                          </div>
+
+
+						</div>
+						<div class="card-body">
+							<div>
+								<span th:utext="${order.productNames}"></span>
+							</div>
+							
+
+
+							<div class="row">
+
+								<div class="col">
+								
+								
+								<div> Total  : [[${order.total}]]</div>
+									<div class="roe">
+									 <span  th:class="'textOrderStatus' +${order.id}">status : [[${order.status}]]</span>
+									</div>
+		    
+		</div>
+		<div>
+		   <small>Order Time : [[${order.orderTime}]]</small>
+		</div>
+		</div>
+
+
+
+
+
+
+
+						</div>
+
+					</div>
+
+
+
+				</div>
+				<div>&nbsp;</div>
+			</th:block>
+		
+			
+		</div>
+
+
+
+
+
+
+
+
+		<div class="text-center m-1" th:if="${totalItem >0}">
+			<span>Showing Users # [[${startCount}]] to [[${endCount}]] of
+				[[${totalItem}]]</span>
+		</div>
+		<div class="text-center m-1" th:unless="${totalItem >0}">
+			<span> No User Found</span>
+		</div>
+
+		<div th:if="${totalPage > 1}">
+			<nav aria-label="Page navigation example">
+				<ul class="pagination justify-content-center flex-wrap">
+
+					<li
+						th:class="${currentPage > 1 ? 'page-item' : 'page-item disabled' }">
+						<a class="page-link" th:href="@{/orders/page/1}">First</a>
+					</li>
+					<li
+						th:class="${currentPage > 1 ? 'page-item' : 'page-item disabled' }">
+						<a class="page-link"
+						th:href="@{'/orders/page/' + ${currentPage -1}}">Previous</a>
+					</li>
+
+					<li
+						th:class="${currentPage !=i ? 'page-item' : 'page-item active' }"
+						th:each="i : ${#numbers.sequence(1,totalPage)}"><a
+						class="page-link" th:href="@{'/orders/page/' + ${i}}">[[${i}]]</a>
+					</li>
+
+					<li
+						th:class="${currentPage < totalPage ? 'page-item' : 'page-item disabled' }">
+						<a class="page-link"
+						th:href="@{'/orders/page/' + ${currentPage +1}}">Next</a>
+					</li>
+					<li
+						th:class="${currentPage < totalPage ? 'page-item' : 'page-item disabled' }">
+						<a class="page-link" th:href="@{'/orders/page/' + ${totalPage}}">Last</a>
+					</li>
+
+				</ul>
+			</nav>
+
+		</div>
+
+
+<div th:replace="order/return_order_modal:: content"></div>
+ <div class="modal fade" id="orderDetailModal">
+			<div class="modal-dialog modal-xl">
+				<div class="modal-content"></div>
+			</div>
+		</div>
+ 
+		<div th:replace="navbar:: footer"></div>
+
+	<script type="text/javascript">
+	
+	contextPath = "[[@{/}]]";
+    var csrfHeaderName = "[[${_csrf.headerName}]]";
+	var csrfValue = "[[${_csrf.token}]]";
+	
+	
+	function clearFilter(){
+		 window.location="[[@{/orders}]]";
+		}
+	
+	
+
+	$(document).ready(function() {
+		handleLinkViewOrderDetails();
+	});
+	
+
+	
+	
+	function handleLinkViewOrderDetails() {
+		$(".linkOrderDetail").on("click", function(e) {
+			e.preventDefault();
+			linkDetailURL = $(this).attr("href");
+			$("#orderDetailModal").modal("show").find(".modal-content").load(linkDetailURL);
+		});		
+	}
+
+	
+	
+	
+	</script>
+	
+	<script type="text/javascript" th:src="@{/js/return_order.js}"></script>
+</body>
+</html>

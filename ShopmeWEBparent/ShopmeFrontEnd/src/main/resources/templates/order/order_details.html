@@ -193,6 +193,19 @@
 		  
 		  <div class="tab-pane fade p-3" id="track" role="tabpanel">
 		  	<div class="full-details">
+		  	
+		  	<div class="row text-center">
+
+		  	
+		  	        
+		  	        <div th:replace="order/order_status :: content(${order.processing},'fa-spinner','processing')"></div>
+		  	        <div th:replace="order/order_status :: content(${order.picked},'fa-people-carry','picked')"></div>
+		  	        <div th:replace="order/order_status :: content(${order.shipping},'fa-shipping-fast','shipping')"></div>
+		  	        <div th:replace="order/order_status :: content(${order.delevered},'fa-box-open','delevered')"></div>
+		  	
+		  	</div>
+		  	
+		  	
 			<table class="table table-striped table-bordered table-hover table-responsive-sm">
 				<thead class="thead-dark">
 					<tr>
@@ -212,6 +225,26 @@
 			</div>
 			
 			<div class="less-details">
+			
+			
+			<div class="row text-center">
+
+		  	
+		  	        
+		  	        <div th:replace="order/order_status :: content(${order.processing},'fa-spinner','processing')"></div>
+		  	        <div th:replace="order/order_status :: content(${order.picked},'fa-people-carry','picked')"></div>
+		  	        <div th:replace="order/order_status :: content(${order.shipping},'fa-shipping-fast','shipping')"></div>
+		  	        <div th:replace="order/order_status :: content(${order.delevered},'fa-box-open','delevered')"></div>
+		  	
+		  	<th:block th:if="${order.returned}">
+		  	
+		  <div th:replace="order/order_status :: content(${order.returned},'fa-undo','returned')"></div>
+		  	
+		  	
+		  	</th:block>
+		  	
+		  	</div>
+			
 			<th:block th:each="track : ${order.orderTracks}">
 				<div class="row p-1">
 					<span>[[${track.updatedTime}]]</span>

@@ -9,20 +9,18 @@
 		$("#modalDailog").modal();
 	}
 	
-	function shoeErrorModal(message){
+	function showErrorModal(message){
 		 showModelDailog("Error",message)
+	
 	}
-	function shoeWorningModal(message){
+	function showWorningModal(message){
 		 showModelDailog("Worning",message)
 	}
 	
 	
+	
 		$(document).ready(function(){
 		
-		$("#buttonCansel").on("click",function(){
-			
-			window.location = "[[@{/users}]]";
-		});
 		
 		$("#photoFile").change(function() {
 		if(!showFileSize(this)){

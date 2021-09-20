@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import com.shopme.admin.paging.PagingAndSortingHelper;
 import com.shopme.common.entity.Brand;
 import com.shopme.common.entity.Product;
 
@@ -54,6 +55,31 @@ public class ProductService {
 		
 		return repo.findAll(pageable);		
 	}
+	
+	
+	
+	public Page<Product>  searchProducts(int pageNum, String sortField, String sortDir, String keyword) {
+		
+		
+      Sort sort = Sort.by(sortField);
+		
+		sort = sortDir.equals("asc") ? sort.ascending() : sort.descending();
+				
+		Pageable pageable = PageRequest.of(pageNum - 1, 1, sort);
+		
+		if (keyword != null && !keyword.isEmpty() ) {
+			return repo.searchProductsByName(keyword, pageable);
+		}
+		
+			return repo.findAll(pageable);
+		
+		
+	}
+	
+
+
+	
+	
 	
 	
 	public Product save(Product product) {

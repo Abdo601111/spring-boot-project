@@ -9,7 +9,9 @@ import com.shopme.common.entity.Order;
 
 public interface OrderRepository extends PagingAndSortingRepository<Order, Integer>{
 	
-	@Query("SELECT o FROM Order o WHERE o.firstName LIKE %?1% OR "
+	@Query("SELECT o FROM Order o WHERE  CONCAT('#',o.id) LIKE %?1% OR"
+			+ " CONCAT(o.firstName, ' ' ,o.lastName) LIKE %?1% OR"
+			+ " o.firstName LIKE %?1% OR "
 			+ "o.lastName LIKE %?1% OR "
 			+ "o.addtess1 LIKE %?1% OR "
 			+ "o.address2 LIKE %?1% OR "

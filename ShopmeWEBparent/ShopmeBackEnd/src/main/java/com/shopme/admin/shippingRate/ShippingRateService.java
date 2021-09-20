@@ -10,16 +10,20 @@ import org.springframework.stereotype.Service;
 
 import com.shopme.admin.country.CountryRepository;
 import com.shopme.admin.paging.PagingAndSortingHelper;
+import com.shopme.admin.product.ProductRepository;
 import com.shopme.common.entity.Country;
+import com.shopme.common.entity.Product;
 import com.shopme.common.entity.ShippingRate;
 
 @Service
 @Transactional
 public class ShippingRateService {
 	public static final int RATES_PER_PAGE = 10;
+	public static final int DIM_DEVIVOR = 139;
 	
 	@Autowired private ShippingRateRepository shipRepo;
 	@Autowired private CountryRepository countryRepo;
+	@Autowired private ProductRepository repo;
 
 	public void listByPage(int pageNum, PagingAndSortingHelper helper) {
 		helper.listEntities(pageNum, RATES_PER_PAGE, shipRepo);
@@ -67,4 +71,20 @@ public class ShippingRateService {
 		}
 		shipRepo.deleteById(id);
 	}	
+	
+	
+	public float  calculateShippingRate(Integer productId,Integer countryId,String state) throws ShippingRateNotFoundException {
+		ShippingRate shippungRate= shipRepo.findByCountryAndState(countryId, state);
+		if(shippungRate == null) {
+			
+			throw new ShippingRateNotFoundException("No Shipping Rate Found	For The Given Destination"
+					+ "You Have Enter Shippig Cost Manually " );
+
+		}
+		Product product=repo.findById(productId).get();
+		float dmiWieght= (product.getLength()* product.getWidth()*product.getHeight())/DIM_DEVIVOR;
+		float finalWight = product.getWeight() > dmiWieght ?product.getWeight() : dmiWieght;
+		return finalWight *shippungRate.getRate() ;
+	}
+	
 }

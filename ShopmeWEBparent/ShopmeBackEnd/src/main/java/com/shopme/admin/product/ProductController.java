@@ -89,6 +89,12 @@ public class ProductController {
 	
 	
 	
+	
+	
+	
+	
+	
+	
 	@GetMapping("/products/new")
 	public String newProduct(Model model) {
 		

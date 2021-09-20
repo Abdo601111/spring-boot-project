@@ -1,7 +1,12 @@
 package com.shopme.common.entity;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -61,8 +66,21 @@ public class Order {
 	@ManyToOne
 	private Customer customer;
 	
-	@OneToMany(mappedBy = "orderDetails", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "orderDetails", cascade = CascadeType.ALL,orphanRemoval = true)
 	private Set<OrderDetail> orderDetails  = new HashSet<>();
+	
+	@OneToMany(mappedBy = "order", cascade = CascadeType.ALL,orphanRemoval = true)
+	private List<OrderTrack> orderTracks = new ArrayList<>();
+	
+	
+
+	public List<OrderTrack> getOrderTracks() {
+		return orderTracks;
+	}
+
+	public void setOrderTracks(List<OrderTrack> orderTracks) {
+		this.orderTracks = orderTracks;
+	}
 
 	public Integer getId() {
 		return id;
@@ -200,13 +218,7 @@ public class Order {
 		this.deliverDays = deliverDays;
 	}
 
-	public Date getDeliverDay() {
-		return deliverDay;
-	}
-
-	public void setDeliverDay(Date deliverDay) {
-		this.deliverDay = deliverDay;
-	}
+	
 
 	public PaymentMethod getPaymentMethod() {
 		return paymentMethod;
@@ -293,7 +305,131 @@ public class Order {
 		return address;
 	}
 	
+	@Transient
+	public String getDeliverDateOnForm() {
+		DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
+		return dateFormatter.format(this.deliverDay);
+	}	
+	
+	public void setDeliverDateOnForm(String dateString) {
+		DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
+ 		
+		try {
+			this.deliverDay = dateFormatter.parse(dateString);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		} 		
+	}
+	public String getDeliverDay() {
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		return dateFormat.format(this.deliverDay);
+	}
 
+	public void setDeliverDay(Date deliverDay) {
+		this.deliverDay = deliverDay;
+	}
+	
+	
+	@Transient
+	public String getRecipientName() {
+		
+String name = firstName;
+		
+		if(lastName != null && !lastName.isEmpty()) name += " " +lastName;
+		
+		return name;
+		
+	}
+	
+	
+	
+	
+	@Transient
+	public String getRecipientAddress() {
+		
+		String address = addtess1;
+		
+		
+		if(address2 != null && !address2.isEmpty()) address += " , " +address2;
+		if(!city.isEmpty()) address += " , " + city;
+		if(state != null && !state.isEmpty()) address += " , " +state;
+		address+= " , " + country;
+		if(!postalCode.isEmpty()) address += " postalCode  : " + postalCode;
+
+
+		return address;
+		
+	}
+	
+	@Transient
+	public boolean isCOD() {
+		
+		return paymentMethod.equals(PaymentMethod.COD);
+	}
+	
+	@Transient
+	public boolean isPicked() {
+		return hasStatus(OrderStatus.PICKED);
+	}
+	
+	@Transient
+	public boolean isShipping() {
+		return hasStatus(OrderStatus.SHIPPING);
+	}
+	
+	@Transient
+	public boolean isDelevered() {
+		return hasStatus(OrderStatus.DELIVERED);
+	}
+	
+	@Transient
+	public boolean isReturned() {
+		return hasStatus(OrderStatus.RETURNED);
+	}
+	
+	@Transient
+	public boolean isProcessing() {
+		return hasStatus(OrderStatus.PROCESSING);
+	}
+	
+	
+	@Transient
+	public boolean isReturnRequested() {
+		return hasStatus(OrderStatus.RETURN_REQUEST);
+	}
+
+	
+	public boolean hasStatus(OrderStatus status) {
+		
+		for (OrderTrack aTrack : orderTracks) {
+			if(aTrack.getStatus().equals(status)) {
+				return true;
+			}
+			
+		}
+		return false;
+	}
+	
+	
+	@Transient
+	public String getProductNames() {
+		String productNames="";
+		
+		productNames="<ul>";
+		
+		for (OrderDetail orderDetail : orderDetails) {
+			productNames+= "<li>" + orderDetail.getProduct().getName()+"</li>";
+			
+		}
+		productNames+= "</ul>";
+		
+		return productNames;
+		
+	}
+	
+
+	
+	
 	
 	
 }

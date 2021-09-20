@@ -1,6 +1,7 @@
 package com.shopme.common.entity;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -12,11 +13,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-
 import javax.persistence.Table;
 import javax.persistence.Transient;
-
-import org.springframework.transaction.event.TransactionalEventListener;
 
 
 
@@ -120,6 +118,19 @@ public class User {
 		return firstName +" "+lastName;
 	}
 	
+	public boolean hasRole(String roleName) {
+		Iterator<Role> iterator = role.iterator();
+		
+		while (iterator.hasNext()) {
+			Role role = iterator.next();
+			if (role.getName().equals(roleName)) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
+
 	
 	
 	

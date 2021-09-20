@@ -71,5 +71,10 @@ public class ShopmeUserDetails  implements UserDetails{
 	public String getFullname() {
 		return this.user.getFirstName() +" "+this.user.getLastName();
 	}
+	
+	public boolean hasRole(String roleName) {
+		return user.hasRole(roleName);
+		
+	}
 
 }
