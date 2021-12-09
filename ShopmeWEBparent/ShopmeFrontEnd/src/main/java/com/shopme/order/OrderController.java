@@ -1,9 +1,13 @@
 package com.shopme.order;
 
+import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.shopme.common.entity.OrderDetail;
+import com.shopme.common.entity.Product;
+import com.shopme.review.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -22,6 +26,7 @@ public class OrderController {
 	
 	@Autowired private OrderService orderservice;
 	@Autowired private CustomerService customerService;
+	@Autowired private ReviewService reviewService;
 	
 	@GetMapping("/orders")
 	public String ListOrderFirtPage(Model model,HttpServletRequest request) throws CustomerNotFoundException {
@@ -81,12 +86,34 @@ public class OrderController {
 		
 		Customer customer =getAuthentication(request);
 		Order order= orderservice.getOrder(id, customer);
+
+		setProductReviewedByStatus(customer,order);
 		model.addAttribute("order", order);
 		return "order/order_details";
-	} 
-	
-	
-	
-	
+	}
+
+	private void setProductReviewedByStatus(Customer customer, Order order) {
+
+		Iterator<OrderDetail> iterator =order.getOrderDetails().iterator();
+
+		while (iterator.hasNext()){
+
+			OrderDetail orderDetail = iterator.next();
+			Product product = orderDetail.getProduct();
+			Integer productId= product.getId();
+			boolean didCustomerReviewProduct= reviewService.didCustomerReviewProduct(customer,productId);
+			product.setReviewedByCustomer(didCustomerReviewProduct);
+
+			if(!didCustomerReviewProduct){
+				boolean canCustomerReviewProduct = reviewService.canCustomerReviewProduct(customer,productId);
+				product.setCustomerCanReview(canCustomerReviewProduct);
+			}
+
+
+		}
+
+
+	}
+
 
 }

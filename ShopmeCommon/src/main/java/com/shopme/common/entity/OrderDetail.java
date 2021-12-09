@@ -24,6 +24,39 @@ public class OrderDetail {
 
 	@ManyToOne
 	private Order orderDetails;
+	
+	
+	
+
+	public OrderDetail() {
+		super();
+	}
+	
+	
+	
+
+	public OrderDetail(String newCategory,float quantity, float productCost, float shippingCost, float subTotal) {
+		this.product= new Product();
+		this.product.setCategory(new Category(newCategory));
+		this.quantity = quantity;
+		this.productCost = productCost * quantity;
+		this.shippingCost = shippingCost;
+		this.subTotal = subTotal;
+	}
+	
+	
+
+	
+	public OrderDetail(float quantity,String productName, float productCost, float shippingCost, float subTotal) {
+		this.product= new Product(productName);
+		this.quantity = quantity;
+		this.productCost = productCost * quantity;
+		this.shippingCost = shippingCost;
+		this.subTotal = subTotal;
+	}
+
+
+
 
 	public Integer getId() {
 		return id;

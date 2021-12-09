@@ -44,7 +44,7 @@ function showMessageDialog(message){
 	divReason.hide();
 	firstButton.hide();
 	secondButton.text("Close");
-	filedNote.val(message);
+	divMessag.val(message);
 	
 	divMessag.show();
 	
@@ -55,7 +55,7 @@ function handelReturnOrder(){
 	$(".linkReturnOrder").on("click",function(e){
 		e.preventDefault();
            showReturnModalDialog($(this))		
-	})
+	});
 	
 	
 }
@@ -63,7 +63,7 @@ function handelReturnOrder(){
 
 function submitReturnedOrderForm(){
 	
-	reason= $("input[name='returnReason'] : checked")
+	reason= $("input[name='returnReason'] : checked").val();
 	note = filedNote.val();
 	sendReturnOrderRequedt(reason,note);
 	return false;
@@ -87,7 +87,7 @@ function sendReturnOrderRequedt(reason,note){
 		
 	}).done(function(returnResponse){
 		showMessageDialog("Return Request has Send");
-		updateStatusTextAndhideButton(orderId);
+		updateStatusTextAndhideButton(returnResponse.orderId);
 	}).fail(function(err){
 		showMessageDialog(err.responseText);
 		
@@ -99,15 +99,15 @@ function sendReturnOrderRequedt(reason,note){
 
 function updateStatusTextAndhideButton(orderId){
 	
-	$(".textOrderStatus"+orderId).each(function(){
+	$(".textOrderStatus"+orderId).each(function(index){
 		
 		$(this).text("RETURN_REQUEST");
-	});
+	})
 	
-	$(".linkReturn"+orderId).each(function(){
+	$(".linkReturn"+orderId).each(function(index){
 		
 		$(this).hide();
-	});
-}
+	})
+	}
 
 

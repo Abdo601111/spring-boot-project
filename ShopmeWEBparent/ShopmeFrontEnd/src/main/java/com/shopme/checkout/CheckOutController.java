@@ -9,6 +9,8 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 
+import com.shopme.sms.Smsrequest;
+import com.shopme.sms.Smsservice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -47,6 +49,7 @@ public class CheckOutController {
 	@Autowired private OrderService orderService;
 	@Autowired private SettingService settingService;
 	@Autowired private PayPalService paypalService;
+	@Autowired private Smsservice smsservice;
 	
 	@GetMapping("/checkout")
 	public String checkOut(Model model,HttpServletRequest request) throws CustomerNotFoundException {
@@ -124,13 +127,32 @@ public class CheckOutController {
       Order order = orderService.createorder(customer, defaultAddress, cartItem, paymentMethod, checkOutInfo);
         cardService.deleteByCustomer(customer);
         sendConfirmationEmail(request,order);
+		sendConfirmationPhone(order);
 		
 		return "checkout/order_completed";
 	}
 
+	private void sendConfirmationPhone(Order order) {
+		Smsrequest smsrequest= new Smsrequest();
+		String phoneNumber= order.getCustomer().getPhoneNumber().substring(1);
+		String phone= "+20".concat(phoneNumber);
+//		DateFormat dateFormate =  new SimpleDateFormat("HH:mm:ss E , dd MMM yyyy");
+//		String orderTime = dateFormate.format(order.getOrderTime());
+		String total= String.valueOf(order.getTotal());
+//		String content="";
+//		content = content.replace("[[name]]", order.getCustomer().getFullName());
+//		content = content.replace("[[orderId]]",String.valueOf(order.getId()) );
+//		content = content.replace("[[orderTime]]",orderTime );
+//		content = content.replace("[[shippingAddress]]",order.getShippingAddress());
+//		content = content.replace("[[total]]",total);
+//		content = content.replace("[[paymentmethod]]",order.getPaymentMethod().toString());
 
+		smsrequest.setNumber(phone);
+		smsrequest.setMessage("Order Completed Successfully :" +
+				"Total : "+total);
+		smsservice.sendsms(smsrequest);
 
-
+	}
 
 
 	private void sendConfirmationEmail(HttpServletRequest request, Order order) throws UnsupportedEncodingException, MessagingException {
@@ -193,8 +215,14 @@ public class CheckOutController {
 		model.addAttribute("pageTitle", pageTitle);
 		return "message";
 	}
-	
 
+
+	public static void main(String[] args) {
+		String d= "01093463729".substring(1);
+		String phone ="02".concat(d);
+		System.out.println(phone);
+
+	}
 	
 	
 	

@@ -35,6 +35,7 @@ public class BrandController {
 	
 	@GetMapping("/brands")
 	public String listFirstPage(Model model) {
+
 		return listByPage(1, model, "name", "asc", null);
 	}
 	

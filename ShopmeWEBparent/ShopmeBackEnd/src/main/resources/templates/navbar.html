@@ -30,7 +30,7 @@ xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 						   <div class="dropdown-menu">
 						   <a class="dropdown-item"  th:href="@{/users/new}" >New User</a>
 						   <a class="dropdown-item"  th:href="@{/users}" >All Users</a>
-						   
+
 						   </div>
 						   
 						</li>
@@ -44,8 +44,16 @@ xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 						<li class="nav-item">
 						   <a class="nav-link" th:href="@{/brands}">Brands</a>
 						</li>
-						<li class="nav-item">
-						   <a class="nav-link" th:href="@{/products}">Products</a>
+
+
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle"  data-toggle="dropdown" th:href="@{/products}" >Products</a>
+							<div class="dropdown-menu">
+								<a class="dropdown-item"  th:href="@{/products}" >products</a>
+								<a class="dropdown-item"  th:href="@{/reviews}" >reviews</a>
+
+							</div>
+
 						</li>
 						<li class="nav-item">
 						   <a class="nav-link" th:href="@{/customers}">Customers</a>
@@ -58,7 +66,7 @@ xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 						</li>
 						
 						<li class="nav-item">
-						   <a class="nav-link" sec:authorize="hasAuthority('Manger')" th:href="@{/report}">Sale Report</a>
+						   <a class="nav-link" sec:authorize="hasAuthority('Manger')" th:href="@{/reports}">Sale Report</a>
 						</li>
 						<li class="nav-item">
 						   <a class="nav-link" th:href="@{/articles}">Articles</a>

@@ -56,12 +56,20 @@ public class Product {
 	private float width;
 	private float height;
 	private float weight;
+
+	private int reviewCount;
+	private float averageRating;
+
+
 	@ManyToOne
 	@JoinColumn(name="category_id")
 	private Category category;
 	@ManyToOne
 	@JoinColumn(name="brand_id")
 	private Brand brand;
+
+	@Transient private boolean customerCanReview;
+	@Transient private boolean reviewedByCustomer;
 	
 	public Product () {
 		
@@ -70,6 +78,9 @@ public Product (Integer id) {
 		this.id= id;
 	}
 	
+	public Product(String productName) {
+	this.name=productName;
+}
 	public Integer getId() {
 		return id;
 	}
@@ -208,7 +219,7 @@ public Product (Integer id) {
 	public void setDetails(List<ProductDetail> details) {
 		this.details = details;
 	}
-	
+
 	public void addDetail(String name, String value) {
 		this.details.add(new ProductDetail(name, value, this));
 	}
@@ -236,5 +247,42 @@ public Product (Integer id) {
 		return this.price;
 	}
 
-	
+
+	public int getReviewCount() {
+		return reviewCount;
+	}
+
+	public void setReviewCount(int reviewCount) {
+		this.reviewCount = reviewCount;
+	}
+
+	public float getAverageRating() {
+		return averageRating;
+	}
+
+	public void setAverageRating(float averageRating) {
+		this.averageRating = averageRating;
+	}
+
+	@Transient
+	public String getURI(){
+		return "/p/"+this.alias+"/";
+	}
+
+
+	public boolean isCustomerCanReview() {
+		return customerCanReview;
+	}
+
+	public void setCustomerCanReview(boolean customerCanReview) {
+		this.customerCanReview = customerCanReview;
+	}
+
+	public boolean isReviewedByCustomer() {
+		return reviewedByCustomer;
+	}
+
+	public void setReviewedByCustomer(boolean reviewedByCustomer) {
+		this.reviewedByCustomer = reviewedByCustomer;
+	}
 }

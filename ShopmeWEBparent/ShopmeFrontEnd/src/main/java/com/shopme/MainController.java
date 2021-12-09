@@ -1,5 +1,6 @@
 package com.shopme;
 
+import com.shopme.product.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -14,10 +15,12 @@ import com.shopme.category.CategoryService;
 public class MainController {
 
 	@Autowired private CategoryService service;
+	@Autowired private ProductService productService;
 	
 	@GetMapping("")
 	public String home(Model model) {
 		model.addAttribute("listCategory", service.listNoChilderCategory());
+		model.addAttribute("listProduct", productService.listAll());
 		return "index";
 	}
 	

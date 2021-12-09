@@ -85,7 +85,6 @@ public class ProductService {
 	public Product save(Product product) {
 		if(product.getId() == null) {
 			product.setCreatedTime(new Date());
-			
 		}
 		if(product.getAlias() == null || product.getAlias().isEmpty()) {
 			String defaultAlias = product.getName().replaceAll(" ", "-");
@@ -94,7 +93,9 @@ public class ProductService {
 			product.setAlias(product.getAlias().replaceAll(" ", "-"));
 		}
 		product.setUpdatedTime(new Date ());
-		return repo.save(product);
+		Product productInDB= repo.save(product);
+		repo.updateReviewAverageRating(productInDB.getId());
+		return productInDB;
 		
 	}
 	

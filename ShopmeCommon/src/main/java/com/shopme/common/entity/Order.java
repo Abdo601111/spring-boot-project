@@ -73,6 +73,25 @@ public class Order {
 	private List<OrderTrack> orderTracks = new ArrayList<>();
 	
 	
+	
+	
+	
+
+	public Order() {
+		super();
+	}
+	
+	
+
+	public Order(Integer id,Date orderTime, float productCost, float subTotal, float total) {
+		this.id=id;
+		this.orderTime = orderTime;
+		this.productCost = productCost;
+		this.subTotal = subTotal;
+		this.total = total;
+	}
+
+
 
 	public List<OrderTrack> getOrderTracks() {
 		return orderTracks;

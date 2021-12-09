@@ -114,6 +114,18 @@
 						 = 
 						 <div>[[${detail.subTotal}]]</div>
 					</div>
+
+
+					<div th:if="${!product.reviewedByCustomer && product.customerCanReview}">
+
+						<a th:href="@{'/write_review/product/'+${product.id}}" class="btn btn-info">Write Review</a>
+					</div>
+
+					<div th:if="${product.reviewedByCustomer }">
+
+						<a th:href="@{'/reviews/page/1?sortField=reviewTime&sortDir=desc&keyword=' + ${product.name}}" class="btn btn-warning">See Your Review</a>
+					</div>
+
 					<div>
 						Shipping Cost: <div >[[${detail.shippingCost}]]</div>
 					</div>					

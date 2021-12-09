@@ -6,28 +6,28 @@
 <body>
 
 <div class="container-fluid">
-		
-		<div  th:replace="navbar:: menu"></div>
-		<div th:replace="navbar :: search_nav"></div>
 
-		<div>
-			<h1>  Shopme By Category  </h1>
+	<div  th:replace="navbar:: menu"></div>
+	<div th:replace="navbar :: search_nav"></div>
 
-		</div>
-		<div class="row">
-		  <div class="col" th:each="cat : ${listCategory}">
-		  <div ><img alt="" th:src="@{${cat.imagePath}}" width="80px" height="80px"></div>
-		  <div>
-		  <a th:href="@{'/c/' +${cat.alias}}">[[${cat.name}]]</a>
-		  </div>
-		  
-		  </div>
-		
-		</div>
-		<div th:replace="navbar:: footer"></div>
+	<div>
+		<h1>  Shopme By Category  </h1>
 
 	</div>
-	
+	<div class="row">
+		<div class="col" th:each="cat : ${listCategory}">
+			<div ><img alt="" th:src="@{${cat.imagePath}}" width="80px" height="80px"></div>
+			<div>
+				<a th:href="@{'/c/' +${cat.alias}}">[[${cat.name}]]</a>
+			</div>
+
+		</div>
+
+	</div>
+	<div th:replace="navbar:: footer"></div>
+
+</div>
+
 
 
 

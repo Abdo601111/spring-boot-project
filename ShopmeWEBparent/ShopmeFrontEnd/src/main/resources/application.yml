@@ -5,9 +5,9 @@ server:
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    password: hbstudent
+    password: Abdo1020304050
     url: 'jdbc:mysql://localhost:3306/shopme '
-    username: hbstudent
+    username: root
   jpa:
     hibernate:
       ddl-auto: update
@@ -28,3 +28,9 @@ spring:
             scope:
             - email
             - p
+
+twilio:
+    account_sid: AC2d522e30dfd64b3301ed0a0d7f1c6982
+    auth_token: 523ea6598e02ca257c980fd8db9f8afa
+    from_number: "+14325276466"
+
